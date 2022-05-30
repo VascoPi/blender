@@ -74,6 +74,25 @@ set(ADDON_USD_NODES_NODES_FILES
 
 set(ADDON_PROPERTIES_FILES
   addon/properties/__init__.py
+  addon/properties/node.py
+  addon/properties/scene.py
+  addon/properties/hdrpr_render.py
+  addon/properties/material.py
+  addon/properties/matlib.py
+  addon/properties/object.py
+  addon/properties/usd_list.py
+)
+
+set(ADDON_UI_FILES
+  addon/ui/__init__.py
+  addon/ui/render.py
+  addon/ui/hdrpr_render.py
+  addon/ui/object.py
+  addon/ui/world.py
+  addon/ui/material.py
+  addon/ui/light.py
+  addon/ui/matlib.py
+  addon/ui/panels.py
 )
 
 set(ADDON_UTILS_FILES
@@ -91,3 +110,4 @@ delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_UTILS_FILES}" ${HDUSD_INSTA
 delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_PROPERTIES_FILES}" ${HDUSD_INSTALL_PATH}/properties)
 delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_USD_NODES_FILES}" ${HDUSD_INSTALL_PATH}/usd_nodes)
 delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_USD_NODES_NODES_FILES}" ${HDUSD_INSTALL_PATH}/usd_nodes/nodes)
+delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_UI_FILES}" ${HDUSD_INSTALL_PATH}/ui)

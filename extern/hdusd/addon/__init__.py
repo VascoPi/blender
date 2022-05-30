@@ -23,18 +23,19 @@ if "bpy" in locals():
     import importlib
     if "engine" in locals():
         importlib.reload(engine)
-    # if "ui" in locals():
-    #     importlib.reload(ui)
+    if "ui" in locals():
+        importlib.reload(ui)
     # if "operators" in locals():
     #     importlib.reload(operators)
-    # if "properties" in locals():
-    #     importlib.reload(properties)
+    if "properties" in locals():
+        importlib.reload(properties)
 
 
 from . import (
     engine,
     usd_nodes,
     properties,
+    ui,
     handlers,
 )
 
@@ -58,7 +59,7 @@ def register():
     engine.init()
 
     properties.register()
-    # ui.register()
+    ui.register()
     # operators.register()
     # presets.register()
     usd_nodes.register()
@@ -76,7 +77,7 @@ def unregister():
 
     # bpy.app.handlers.version_update.remove(version_update.do_versions)
 
-    # ui.unregister()
+    ui.unregister()
     # operators.unregister()
     properties.unregister()
     # presets.unregister()
