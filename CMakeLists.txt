@@ -715,7 +715,7 @@ mark_as_advanced(POSTCONFIGURE_SCRIPT)
 
 # USD Hydra plugin.
 if(WIN32 AND WITH_USD)
-  option(WITH_HDUSD "Enable USD Hydra plugin" ON)
+  option(WITH_USDHYDRA "Enable USD Hydra plugin" ON)
 endif()
 
 # end option(...)

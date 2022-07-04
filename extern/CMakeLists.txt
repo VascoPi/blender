@@ -100,6 +100,6 @@ if(WITH_COMPOSITOR)
   add_subdirectory(smaa_areatex)
 endif()
 
-if(WITH_HDUSD)
-  add_subdirectory(hdusd)
+if(WITH_USDHYDRA)
+  add_subdirectory(usdhydra)
 endif()
