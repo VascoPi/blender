@@ -3,18 +3,34 @@
 
 #include <GL/glew.h>
 
+#include "pxr/pxr.h"
+
 #include <pxr/usd/usd/stage.h>
 #include <pxr/base/gf/camera.h>
-#include <pxr/base/plug/registry.h>
 #include <pxr/imaging/glf/drawTarget.h>
 #include <pxr/usd/usdGeom/camera.h>
 #include <pxr/usdImaging/usdImagingGL/engine.h>
 #include <pxr/usdImaging/usdImagingGL/renderParams.h>
 #include <pxr/usdImaging/usdAppUtils/camera.h>
+#include <pxr/imaging/hd/rendererPlugin.h>
+#include <pxr/imaging/hd/rendererPluginRegistry.h>
+
+#include <pxr/imaging/hd/rendererPluginHandle.h>
+#include <pxr/imaging/hd/pluginRenderDelegateUniqueHandle.h>
+
+#include <pxr/imaging/hf/pluginRegistry.h>
+#include <pxr/usd/usdShade/material.h>
+
+
+#include <pxr/base/plug/registry.h>
+#include <pxr/base/plug/plugin.h>
+#include <Python.h>
+
 
 #include "glog/logging.h"
 
 #include "session.h"
+#include "usd_common.h"
 
 using namespace pxr;
 
@@ -129,11 +145,71 @@ void BlenderSession::render(BL::Depsgraph &b_depsgraph)
 
 void BlenderSession::view_draw(BL::Depsgraph &b_depsgraph, BL::Context &b_context)
 {
+  //blender::io::usd::ensure_usd_plugin_path_registered();
+//  const TfToken pluginId("HdRprPlugin");
+//
+//    auto rendererPluginDeleter = [](HdRendererPlugin* ptr)
+//    {
+//        HdRendererPluginRegistry::GetInstance().ReleasePlugin(ptr);
+//    };
+//
+//    auto rendererPlugin = std::unique_ptr<HdRendererPlugin, decltype(rendererPluginDeleter)>
+//    (
+//        HdRendererPluginRegistry::GetInstance().GetRendererPlugin(pluginId),
+//        rendererPluginDeleter
+//    );
+//
+//    if (rendererPlugin == nullptr)
+//    {
+//        TF_FATAL_ERROR("HdRpr plugin not created");
+//        return;
+//    }
+//
+//    HdRenderSettingsMap renderSettings;
+//
+//    auto renderDelegateDeleter = [plugin = rendererPlugin.get()](HdRenderDelegate* ptr) {
+//        plugin->DeleteRenderDelegate(ptr);
+//    };
+//
+//    auto renderDelegate  = std::unique_ptr<HdRenderDelegate, decltype(renderDelegateDeleter)>(
+//    rendererPlugin->CreateRenderDelegate(renderSettings),
+//    renderDelegateDeleter
+//    );
+//
+//    if (!imagingGLEngine) {
+//    imagingGLEngine = std::make_unique<pxr::UsdImagingGLEngine>();
+//  }
+//
+//    bool b = imagingGLEngine->SetRendererPlugin(TfToken(renderDelegate.get()->GetRendererDisplayName()));
+
+
+
+
+//  for (auto i : pxr::PlugRegistry::GetInstance().GetAllPlugins()) {
+//   printf("%s\n", i->GetName().c_str());
+//  }
+
+//  pxr::TfToken pluginId1 = pxr::TfToken("HdStormRendererPlugin");
+//  pxr::HdRendererPlugin *renderPlugin1 = pxr::HdRendererPluginRegistry::GetInstance().GetRendererPlugin(pluginId1);
+//   printf("Plugin for %s is %s\n", pluginId1.GetText(), renderPlugin1->GetPluginId().GetText());
+//
+//  pxr::TfToken pluginId2 = pxr::TfToken("HdRprPlugin");
+//  pxr::HdRendererPlugin *renderPlugin2 = pxr::HdRendererPluginRegistry::GetInstance().GetRendererPlugin(pluginId2);
+//   printf("Plugin for %s is %s\n", pluginId2.GetText(), renderPlugin2->GetPluginId().GetText());
+
+//  pxr::PlugPluginPtr renderPlugin = pxr::PlugRegistry::GetInstance().GetPluginWithName("hdRpr");
+//  bool a = renderPlugin->Load();
+//  printf("%d\n", a);
+
+  blender::io::usd::ensure_usd_plugin_path_registered();
+
   if (!imagingGLEngine) {
-    imagingGLEngine = std::make_unique<pxr::UsdImagingGLEngine>();
+  imagingGLEngine = std::make_unique<pxr::UsdImagingGLEngine>();
   }
 
-  bool b = imagingGLEngine->SetRendererPlugin(TfToken("HdRprPlugin"));
+  pxr::TfToken pluginId = pxr::TfToken("HdRprPlugin");
+
+  bool b = imagingGLEngine->SetRendererPlugin(pluginId);
   printf("%d\n", b);
 
   BL::Scene b_scene = b_depsgraph.scene_eval();
@@ -195,6 +271,7 @@ pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, D
 
   usd_export_params.selected_objects_only = false;
   usd_export_params.visible_objects_only = false;
+  usd_export_params.export_materialx = true;
 
   blender::io::usd::USDHierarchyIterator iter(bmain, depsgraph, usd_stage, usd_export_params);
 
@@ -232,6 +309,33 @@ pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, D
     CFRA = orig_frame;
     BKE_scene_graph_update_for_newframe(depsgraph);
   }
+
+  std::string str;
+  usd_stage->ExportToString(&str);
+  printf("%s\n", str.c_str());
+  pxr::UsdShadeMaterial usd_material;
+  pxr::UsdPrim matPrim = usd_stage->GetPrimAtPath(pxr::SdfPath("/_materials"));
+
+    for (const UsdPrim &childPrim : matPrim.GetAllChildren()) {
+      usd_material = pxr::UsdShadeMaterial::Get(usd_stage, childPrim.GetPath());
+      printf("%s\n", childPrim.GetName().GetString().c_str());
+
+//      mtlxfilepath = usdhydra::get_temp_file(".mtlx", childPrim.GetName().GetString());
+//      doc = mx.createDocument()
+//      mx.readFromXmlFile(doc, mtlxfilepath)
+//      surfacematerial = next(node for node in doc.getNodes() if node.getCategory() == 'surfacematerial')
+//
+//
+//      childPrim.GetReferences().AddReference(mtlxfilepath, pxr::SdfPath("/MaterialX"));
+//      usd_material.CreateSurfaceOutput().ConnectToSource(pxr::SdfPath("/_materials/" + childPrim.GetName().GetString() + "/Materials/" + surfacematerial.getName() ".outputs:mtlx:surface"));
+
+      childPrim.GetReferences().AddReference("D:/Material.mtlx", pxr::SdfPath("/MaterialX"));
+      usd_material.CreateSurfaceOutput().ConnectToSource(pxr::SdfPath("/_materials/" + childPrim.GetName().GetString() + "/Materials/surfacematerial_2.outputs:mtlx:surface"));
+
+      }
+
+  usd_stage->ExportToString(&str);
+  printf("%s\n", str.c_str());
 
   return usd_stage;
 }

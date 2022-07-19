@@ -13,7 +13,7 @@ IS_WIN = OS == 'Windows'
 IS_MAC = OS == 'Darwin'
 IS_LINUX = OS == 'Linux'
 
-LIBS_DIR = Path(r"D:\amd\blender-git\usd\bin\1\USD\install")
+LIBS_DIR = Path(r"d:\vasyl\AMD\blender-git\usd\bin_1\USD\install")
 
 
 def update_ui(area_type='PROPERTIES', region_type='WINDOW'):

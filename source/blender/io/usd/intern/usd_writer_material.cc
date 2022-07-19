@@ -40,6 +40,7 @@ static const pxr::TfToken diffuse_color("diffuseColor", pxr::TfToken::Immortal);
 static const pxr::TfToken metallic("metallic", pxr::TfToken::Immortal);
 static const pxr::TfToken preview_shader("previewShader", pxr::TfToken::Immortal);
 static const pxr::TfToken preview_surface("UsdPreviewSurface", pxr::TfToken::Immortal);
+static const pxr::TfToken materialx_surface("Materialx", pxr::TfToken::Immortal);
 static const pxr::TfToken uv_texture("UsdUVTexture", pxr::TfToken::Immortal);
 static const pxr::TfToken primvar_float2("UsdPrimvarReader_float2", pxr::TfToken::Immortal);
 static const pxr::TfToken roughness("roughness", pxr::TfToken::Immortal);
@@ -88,6 +89,9 @@ struct InputSpec {
 using InputSpecMap = std::map<std::string, InputSpec>;
 
 /* Static function forward declarations. */
+static pxr::UsdShadeShader create_materialx(const USDExporterContext &usd_export_context,
+                                                     pxr::UsdShadeMaterial &material,
+                                                     bNode *node);
 static pxr::UsdShadeShader create_usd_preview_shader(const USDExporterContext &usd_export_context,
                                                      pxr::UsdShadeMaterial &material,
                                                      const char *name,
@@ -113,6 +117,22 @@ static bNode *traverse_channel(bNodeSocket *input, short target_type);
 
 template<typename T1, typename T2>
 void create_input(pxr::UsdShadeShader &shader, const InputSpec &spec, const void *value);
+
+void create_materialx(const USDExporterContext &usd_export_context,
+                                         Material *material,
+                                         pxr::UsdShadeMaterial &usd_material)
+{
+//  if (!material) {
+//    return;
+//  }
+
+  pxr::UsdPrim prim = usd_material.GetPrim();
+  prim.GetReferences().AddReference("d:/Material.mtlx", pxr::SdfPath("/MaterialX"));
+  usd_material.CreateSurfaceOutput().ConnectToSource(pxr::SdfPath("/_materials/Material/Materials/surfacematerial_2.outputs:mtlx:surface"));
+//  usd_material.CreateSurfaceOutput().ConnectToSource(usd_material.ConnectableAPI(), usdtokens::surface);
+
+
+}
 
 void create_usd_preview_surface_material(const USDExporterContext &usd_export_context,
                                          Material *material,

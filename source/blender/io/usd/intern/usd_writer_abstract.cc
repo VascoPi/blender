@@ -17,6 +17,7 @@ namespace usdtokens {
 static const pxr::TfToken diffuse_color("diffuseColor", pxr::TfToken::Immortal);
 static const pxr::TfToken metallic("metallic", pxr::TfToken::Immortal);
 static const pxr::TfToken preview_shader("previewShader", pxr::TfToken::Immortal);
+static const pxr::TfToken materialx_surface("Materialx", pxr::TfToken::Immortal);
 static const pxr::TfToken preview_surface("UsdPreviewSurface", pxr::TfToken::Immortal);
 static const pxr::TfToken roughness("roughness", pxr::TfToken::Immortal);
 static const pxr::TfToken surface("surface", pxr::TfToken::Immortal);
@@ -99,10 +100,14 @@ pxr::UsdShadeMaterial USDAbstractWriter::ensure_usd_material(const HierarchyCont
   }
   usd_material = pxr::UsdShadeMaterial::Define(stage, usd_path);
 
-  if (material->use_nodes && this->usd_export_context_.export_params.generate_preview_surface) {
+  if (material->use_nodes && this->usd_export_context_.export_params.generate_preview_surface && !this->usd_export_context_.export_params.export_materialx) {
     std::string active_uv = get_mesh_active_uvlayer_name(context.object);
     create_usd_preview_surface_material(
         this->usd_export_context_, material, usd_material, active_uv);
+  }
+  else if (material->use_nodes && this->usd_export_context_.export_params.export_materialx){
+    create_materialx(
+        this->usd_export_context_, material, usd_material);
   }
   else {
     create_usd_viewport_material(this->usd_export_context_, material, usd_material);

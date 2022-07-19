@@ -33,6 +33,7 @@ struct USDExportParams {
   bool use_instancing;
   enum eEvaluationMode evaluation_mode;
   bool generate_preview_surface;
+  bool export_materialx;
   bool export_textures;
   bool overwrite_textures;
   bool relative_paths;

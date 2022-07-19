@@ -130,6 +130,7 @@ static int wm_usd_export_exec(bContext *C, wmOperator *op)
   const bool evaluation_mode = RNA_enum_get(op->ptr, "evaluation_mode");
 
   const bool generate_preview_surface = RNA_boolean_get(op->ptr, "generate_preview_surface");
+  const bool export_materialx = RNA_boolean_get(op->ptr, "export_materialx");
   const bool export_textures = RNA_boolean_get(op->ptr, "export_textures");
   const bool overwrite_textures = RNA_boolean_get(op->ptr, "overwrite_textures");
   const bool relative_paths = RNA_boolean_get(op->ptr, "relative_paths");
@@ -145,6 +146,7 @@ static int wm_usd_export_exec(bContext *C, wmOperator *op)
       use_instancing,
       evaluation_mode,
       generate_preview_surface,
+      export_materialx,
       export_textures,
       overwrite_textures,
       relative_paths,
@@ -181,19 +183,24 @@ static void wm_usd_export_draw(bContext *UNUSED(C), wmOperator *op)
 
   box = uiLayoutBox(layout);
   col = uiLayoutColumnWithHeading(box, true, IFACE_("Materials"));
-  uiItemR(col, ptr, "generate_preview_surface", 0, NULL, ICON_NONE);
+  uiItemR(col, ptr, "export_materialx", 0, NULL, ICON_NONE);
   const bool export_mtl = RNA_boolean_get(ptr, "export_materials");
   uiLayoutSetActive(col, export_mtl);
 
   uiLayout *row = uiLayoutRow(col, true);
-  uiItemR(row, ptr, "export_textures", 0, NULL, ICON_NONE);
+  uiItemR(row, ptr, "generate_preview_surface", 0, NULL, ICON_NONE);
+  const bool export_mtlx = RNA_boolean_get(ptr, "export_materialx");
   const bool preview = RNA_boolean_get(ptr, "generate_preview_surface");
-  uiLayoutSetActive(row, export_mtl && preview);
+  uiLayoutSetActive(row, export_mtl && !export_mtlx);
+
+  row = uiLayoutRow(col, true);
+  uiItemR(row, ptr, "export_textures", 0, NULL, ICON_NONE);
+  uiLayoutSetActive(row, export_mtl && preview && !export_mtlx);
 
   row = uiLayoutRow(col, true);
   uiItemR(row, ptr, "overwrite_textures", 0, NULL, ICON_NONE);
   const bool export_tex = RNA_boolean_get(ptr, "export_textures");
-  uiLayoutSetActive(row, export_mtl && preview && export_tex);
+  uiLayoutSetActive(row, export_mtl && preview && export_tex && !export_mtlx);
 
   box = uiLayoutBox(layout);
   col = uiLayoutColumnWithHeading(box, true, IFACE_("File References"));
@@ -295,6 +302,13 @@ void WM_OT_usd_export(struct wmOperatorType *ot)
                   true,
                   "To USD Preview Surface",
                   "Generate an approximate USD Preview Surface shader "
+                  "representation of a Principled BSDF node network");
+
+    RNA_def_boolean(ot->srna,
+                  "export_materialx",
+                  true,
+                  "To MaterialX",
+                  "Generate an approximate MaterialX shader "
                   "representation of a Principled BSDF node network");
 
   RNA_def_boolean(ot->srna,

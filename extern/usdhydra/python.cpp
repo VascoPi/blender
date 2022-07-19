@@ -22,9 +22,10 @@ namespace usdhydra {
 static PyObject *init_func(PyObject * /*self*/, PyObject *args)
 {
   LOG(INFO) << "init_func";
+  Py_Initialize();
   //putenv("PXR_PLUGINPATH_NAME=D:\\amd\\blender-git\\usd\\plugin");
   blender::io::usd::ensure_usd_plugin_path_registered();
-  pxr::PlugRegistry::GetInstance().RegisterPlugins("D:/amd/blender-git/usd/bin/1/USD/install/plugin/");
+  //pxr::PlugRegistry::GetInstance().RegisterPlugins("D:/amd/blender-git/usd/bin/1/USD/install/plugin/");
 
   stage_init();
 
@@ -64,6 +65,7 @@ extern "C" {
 
 PyObject *USDHydra_initPython(void)
 {
+  Py_Initialize();
   PyObject *mod = PyModule_Create(&usdhydra::module);
   usdhydra::addPythonSubmodule_stage(mod);
   usdhydra::addPythonSubmodule_usd_node(mod);
