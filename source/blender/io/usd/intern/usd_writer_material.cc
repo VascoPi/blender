@@ -28,6 +28,7 @@
 #include <pxr/base/tf/stringUtils.h>
 #include <pxr/pxr.h>
 #include <pxr/usd/usdGeom/scope.h>
+#include <stdio.h>
 
 #include <iostream>
 
@@ -40,6 +41,7 @@ static const pxr::TfToken diffuse_color("diffuseColor", pxr::TfToken::Immortal);
 static const pxr::TfToken metallic("metallic", pxr::TfToken::Immortal);
 static const pxr::TfToken preview_shader("previewShader", pxr::TfToken::Immortal);
 static const pxr::TfToken preview_surface("UsdPreviewSurface", pxr::TfToken::Immortal);
+static const pxr::TfToken materialx_surface("Materialx", pxr::TfToken::Immortal);
 static const pxr::TfToken uv_texture("UsdUVTexture", pxr::TfToken::Immortal);
 static const pxr::TfToken primvar_float2("UsdPrimvarReader_float2", pxr::TfToken::Immortal);
 static const pxr::TfToken roughness("roughness", pxr::TfToken::Immortal);
@@ -88,6 +90,9 @@ struct InputSpec {
 using InputSpecMap = std::map<std::string, InputSpec>;
 
 /* Static function forward declarations. */
+static pxr::UsdShadeShader create_materialx(const USDExporterContext &usd_export_context,
+                                                     pxr::UsdShadeMaterial &material,
+                                                     bNode *node);
 static pxr::UsdShadeShader create_usd_preview_shader(const USDExporterContext &usd_export_context,
                                                      pxr::UsdShadeMaterial &material,
                                                      const char *name,
@@ -113,6 +118,34 @@ static bNode *traverse_channel(bNodeSocket *input, short target_type);
 
 template<typename T1, typename T2>
 void create_input(pxr::UsdShadeShader &shader, const InputSpec &spec, const void *value);
+
+void create_materialx(const USDExporterContext &usd_export_context,
+                                         Material *material,
+                                         pxr::UsdShadeMaterial &usd_material)
+{
+  if (!material) {
+    return;
+  }
+  std::string s = std::to_string(usd_export_context.export_params.test);
+  //std::string s = std::to_string(usd_export_context.materialx_data);
+  std::string materialx_path = "d:/Material.mtlx";
+  //  std::vector<std::vector<std::string>>::iterator materialx_data_entry;
+//  std::vector<std::vector<std::string>> materialx_data = usd_export_context.materialx_data;
+  //for (materialx_data_entry = materialx_data.begin(); materialx_data_entry != materialx_data.end();
+  //     ++materialx_data_entry) {
+//  std::string material_name = materialx_data[0];
+//  std::string materialx_path = materialx_data[1];
+//  std::string materialx_entry_point = materialx_data[2];
+//  printf("$s\n", usd_export_context.materialx_data);
+
+  pxr::UsdPrim prim = usd_material.GetPrim();
+  prim.GetReferences().AddReference(materialx_path, pxr::SdfPath("/MaterialX"));
+  usd_material.CreateSurfaceOutput().ConnectToSource(pxr::SdfPath("token outputs:surface.connect = </_materials/" + s + "/Materials/surfacematerial_2.outputs:mtlx:surface>"));
+ // usd_material.CreateSurfaceOutput().ConnectToSource(pxr::SdfPath(materialx_entry_point));
+ // usd_material.CreateSurfaceOutput().ConnectToSource(usd_material.ConnectableAPI(), usdtokens::surface);
+
+
+}
 
 void create_usd_preview_surface_material(const USDExporterContext &usd_export_context,
                                          Material *material,

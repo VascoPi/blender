@@ -93,7 +93,9 @@ class USDHydraEngine(bpy.types.RenderEngine):
         if not self.session:
             self.session = session_create(self)
 
-        session_reset(self.session, data, context, depsgraph, is_blender_scene, stage)
+        materialx_data = 5
+
+        session_reset(self.session, data, context, depsgraph, materialx_data, is_blender_scene, stage)
 
     def view_draw(self, context, depsgraph):
         if not self.session:
@@ -110,8 +112,8 @@ def session_free(session):
     _usdhydra.session.free(session)
 
 
-def session_reset(session, data, context, depsgraph, is_blender_scene, stage):
-    _usdhydra.session.reset(session, data.as_pointer(), context.as_pointer(), depsgraph.as_pointer(), is_blender_scene, stage)
+def session_reset(session, data, context, depsgraph, materialx_data, is_blender_scene, stage):
+    _usdhydra.session.reset(session, data.as_pointer(), context.as_pointer(), depsgraph.as_pointer(), materialx_data, is_blender_scene, stage)
 
 
 def session_render(session, depsgraph):

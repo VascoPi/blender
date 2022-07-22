@@ -29,10 +29,10 @@ BlenderSession::~BlenderSession()
 {
 }
 
-void BlenderSession::reset(BL::Context b_context, Depsgraph *depsgraph, bool is_blender_scene, int stageId)
+void BlenderSession::reset(BL::Context b_context, Depsgraph *depsgraph, bool is_blender_scene, int stageId, int materialx_data)
 {
   if (is_blender_scene) {
-    stage = export_scene_to_usd(b_context, depsgraph);
+    stage = export_scene_to_usd(b_context, depsgraph, materialx_data);
   }
   else {
     stage = stageCache->Find(pxr::UsdStageCache::Id::FromLongInt(stageId));
@@ -163,7 +163,7 @@ void BlenderSession::view_draw(BL::Depsgraph &b_depsgraph, BL::Context &b_contex
   b_engine.unbind_display_space_shader();
 }
 
-pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgraph *depsgraph)
+pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgraph *depsgraph, int materialx_data)
 {
   LOG(INFO) << "export_scene_to_usd";
 
@@ -194,8 +194,10 @@ pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, D
 
   usd_export_params.selected_objects_only = false;
   usd_export_params.visible_objects_only = false;
+  usd_export_params.export_materialx = true;
+  //std::vector<std::vector<string>> mtlx;
 
-  blender::io::usd::USDHierarchyIterator iter(bmain, depsgraph, usd_stage, usd_export_params);
+  blender::io::usd::USDHierarchyIterator iter(bmain, depsgraph, usd_stage, usd_export_params, materialx_data);
 
   //if (data->params.export_animation) {
   //  /* Writing the animated frames is not 100% of the work, but it's our best guess. */
@@ -276,8 +278,10 @@ static PyObject *reset_func(PyObject * /*self*/, PyObject *args)
 
   int stageId = 0;
   int is_blender_scene = 1;
+  int materialx_data;
 
-  if (!PyArg_ParseTuple(args, "OOOOii", &pysession, &pydata, &pycontext, &pydepsgraph, &is_blender_scene, &stageId)) {
+
+  if (!PyArg_ParseTuple(args, "OOOOiii", &pysession, &pydata, &pycontext, &pydepsgraph, &materialx_data, &is_blender_scene, &stageId)) {
     Py_RETURN_NONE;
   }
 
@@ -299,7 +303,7 @@ static PyObject *reset_func(PyObject * /*self*/, PyObject *args)
   //RNA_pointer_create(NULL, &RNA_Depsgraph, (ID *)PyLong_AsVoidPtr(pydepsgraph), &depsgraphptr);
   //BL::Depsgraph depsgraph(depsgraphptr);
 
-  session->reset(b_context, depsgraph, is_blender_scene, stageId);
+  session->reset(b_context, depsgraph, is_blender_scene, stageId, materialx_data);
 
   Py_RETURN_NONE;
 }

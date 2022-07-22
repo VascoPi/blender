@@ -37,6 +37,18 @@ USDHierarchyIterator::USDHierarchyIterator(Main *bmain,
 {
 }
 
+USDHierarchyIterator::USDHierarchyIterator(Main *bmain,
+                                           Depsgraph *depsgraph,
+                                           pxr::UsdStageRefPtr stage,
+                                           const USDExportParams &params,
+                                           int materialx_data)
+    : AbstractHierarchyIterator(bmain, depsgraph),
+      stage_(stage),
+      params_(params),
+      materialx_data_(materialx_data)
+{
+}
+
 bool USDHierarchyIterator::mark_as_weak_export(const Object *object) const
 {
   if (params_.selected_objects_only && (object->base_flag & BASE_SELECTED) == 0) {
@@ -78,7 +90,7 @@ const pxr::UsdTimeCode &USDHierarchyIterator::get_export_time_code() const
 USDExporterContext USDHierarchyIterator::create_usd_export_context(const HierarchyContext *context)
 {
   return USDExporterContext{
-      bmain_, depsgraph_, stage_, pxr::SdfPath(context->export_path), this, params_};
+      bmain_, depsgraph_, stage_, pxr::SdfPath(context->export_path), this, params_, materialx_data_};
 }
 
 AbstractHierarchyWriter *USDHierarchyIterator::create_transform_writer(
