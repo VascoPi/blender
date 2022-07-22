@@ -29,7 +29,7 @@ BlenderSession::~BlenderSession()
 {
 }
 
-void BlenderSession::reset(BL::Context b_context, Depsgraph *depsgraph, bool is_blender_scene, int stageId, int materialx_data)
+void BlenderSession::reset(BL::Context b_context, Depsgraph *depsgraph, bool is_blender_scene, int stageId, std::vector<std::vector<std::string>> materialx_data)
 {
   if (is_blender_scene) {
     stage = export_scene_to_usd(b_context, depsgraph, materialx_data);
@@ -163,7 +163,7 @@ void BlenderSession::view_draw(BL::Depsgraph &b_depsgraph, BL::Context &b_contex
   b_engine.unbind_display_space_shader();
 }
 
-pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgraph *depsgraph, int materialx_data)
+pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgraph *depsgraph, std::vector<std::vector<std::string>> materialx_data)
 {
   LOG(INFO) << "export_scene_to_usd";
 
@@ -195,7 +195,6 @@ pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, D
   usd_export_params.selected_objects_only = false;
   usd_export_params.visible_objects_only = false;
   usd_export_params.export_materialx = true;
-  //std::vector<std::vector<string>> mtlx;
 
   blender::io::usd::USDHierarchyIterator iter(bmain, depsgraph, usd_stage, usd_export_params, materialx_data);
 
@@ -278,10 +277,10 @@ static PyObject *reset_func(PyObject * /*self*/, PyObject *args)
 
   int stageId = 0;
   int is_blender_scene = 1;
-  int materialx_data;
+  int materialx_data_;
 
 
-  if (!PyArg_ParseTuple(args, "OOOOiii", &pysession, &pydata, &pycontext, &pydepsgraph, &materialx_data, &is_blender_scene, &stageId)) {
+  if (!PyArg_ParseTuple(args, "OOOOiii", &pysession, &pydata, &pycontext, &pydepsgraph, &materialx_data_, &is_blender_scene, &stageId)) {
     Py_RETURN_NONE;
   }
 
@@ -302,6 +301,10 @@ static PyObject *reset_func(PyObject * /*self*/, PyObject *args)
   //PointerRNA depsgraphptr;
   //RNA_pointer_create(NULL, &RNA_Depsgraph, (ID *)PyLong_AsVoidPtr(pydepsgraph), &depsgraphptr);
   //BL::Depsgraph depsgraph(depsgraphptr);
+
+  std::vector<std::vector<std::string>> materialx_data{
+      {"Material", "D:/Material.mtlx", "token outputs:surface.connect = </_materials/Material/Materials/surfacematerial_2.outputs:mtlx:surface>"},
+      {"Material.001", "D:/Material.001.mtlx", "token outputs:surface.connect = </_materials/Material.001/Materials/surfacematerial_2.outputs:mtlx:surface>"}};
 
   session->reset(b_context, depsgraph, is_blender_scene, stageId, materialx_data);
 

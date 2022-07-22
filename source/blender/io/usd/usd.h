@@ -4,7 +4,6 @@
 #pragma once
 
 #include "DEG_depsgraph.h"
-#include <cstring>
 
 #ifdef __cplusplus
 extern "C" {

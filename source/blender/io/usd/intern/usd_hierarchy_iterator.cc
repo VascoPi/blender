@@ -41,7 +41,7 @@ USDHierarchyIterator::USDHierarchyIterator(Main *bmain,
                                            Depsgraph *depsgraph,
                                            pxr::UsdStageRefPtr stage,
                                            const USDExportParams &params,
-                                           int materialx_data)
+                                           std::vector<std::vector<std::string>> materialx_data)
     : AbstractHierarchyIterator(bmain, depsgraph),
       stage_(stage),
       params_(params),

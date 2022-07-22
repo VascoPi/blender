@@ -33,10 +33,10 @@ public:
   BlenderSession(BL::RenderEngine &b_engine);
   ~BlenderSession();
 
-  void reset(BL::Context b_context, Depsgraph *depsgraph, bool is_blender_scene, int stageId, int materialx_data);
+  void reset(BL::Context b_context, Depsgraph *depsgraph, bool is_blender_scene, int stageId, std::vector<std::vector<std::string>> materialx_data);
   void render(BL::Depsgraph &b_depsgraph);
   void view_draw(BL::Depsgraph &b_depsgraph, BL::Context &b_context);
-  pxr::UsdStageRefPtr export_scene_to_usd(BL::Context b_context, Depsgraph *depsgraph, int materialx_data);
+  pxr::UsdStageRefPtr export_scene_to_usd(BL::Context b_context, Depsgraph *depsgraph, std::vector<std::vector<std::string>> materialx_data);
 
 public:
   BL::RenderEngine b_engine;

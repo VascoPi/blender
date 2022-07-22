@@ -126,11 +126,12 @@ void create_materialx(const USDExporterContext &usd_export_context,
   if (!material) {
     return;
   }
-  std::string s = std::to_string(usd_export_context.export_params.test);
-  //std::string s = std::to_string(usd_export_context.materialx_data);
+
+  std::string s = usd_export_context.materialx_data[0][0];
   std::string materialx_path = "d:/Material.mtlx";
-  //  std::vector<std::vector<std::string>>::iterator materialx_data_entry;
-//  std::vector<std::vector<std::string>> materialx_data = usd_export_context.materialx_data;
+  std::string mat_name =  material->id.name + 2;
+ // std::vector<std::vector<std::string>>::iterator materialx_data_entry;
+//std::vector<std::vector<std::string>> materialx_data = usd_export_context.materialx_data;
   //for (materialx_data_entry = materialx_data.begin(); materialx_data_entry != materialx_data.end();
   //     ++materialx_data_entry) {
 //  std::string material_name = materialx_data[0];
