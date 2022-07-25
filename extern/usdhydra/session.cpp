@@ -41,13 +41,9 @@ void BlenderSession::reset(BL::Context b_context, Depsgraph *depsgraph, bool is_
 
 void BlenderSession::render(BL::Depsgraph &b_depsgraph)
 {
-  if (!imagingGLEngine) {
-    imagingGLEngine = std::make_unique<pxr::UsdImagingGLEngine>();
-  }
+  imagingGLEngine = std::make_unique<pxr::UsdImagingGLEngine>();
 
-  pxr::TfToken plugin = pxr::TfToken("HdStormRendererPlugin");
-
-  if (!imagingGLEngine->SetRendererPlugin(plugin)) {
+  if (!imagingGLEngine->SetRendererPlugin(TfToken("HdStormRendererPlugin"))) {
     return;
   }
 
@@ -129,12 +125,6 @@ void BlenderSession::render(BL::Depsgraph &b_depsgraph)
 
 void BlenderSession::view_draw(BL::Depsgraph &b_depsgraph, BL::Context &b_context)
 {
-  if (!imagingGLEngine) {
-    imagingGLEngine = std::make_unique<pxr::UsdImagingGLEngine>();
-  }
-
-  imagingGLEngine->SetRendererPlugin(TfToken("HdRprPlugin"));
-
   BL::Scene b_scene = b_depsgraph.scene_eval();
   
   ViewSettings view_settings(b_context);
@@ -157,10 +147,38 @@ void BlenderSession::view_draw(BL::Depsgraph &b_depsgraph, BL::Context &b_contex
                                                   (double)view_settings.border[1][0], (double)view_settings.border[1][1]));
 
   b_engine.bind_display_space_shader(b_scene);
-  
+
   imagingGLEngine->Render(stage->GetPseudoRoot(), render_params);
 
   b_engine.unbind_display_space_shader();
+}
+
+void BlenderSession::view_update(BL::Depsgraph &b_depsgraph, BL::Context &b_context)
+{
+  if (imagingGLEngine && imagingGLEngine->IsPauseRendererSupported()) {
+    imagingGLEngine->PauseRenderer();
+  }
+
+  imagingGLEngine = std::make_unique<pxr::UsdImagingGLEngine>();
+
+
+  if (!imagingGLEngine->SetRendererPlugin(TfToken("HdStormRendererPlugin"))) {
+    return;
+  }
+
+  sync(b_depsgraph, b_context);
+
+  if (imagingGLEngine->IsPauseRendererSupported()) {
+    imagingGLEngine->ResumeRenderer();
+  }
+}
+
+void BlenderSession::sync(BL::Depsgraph &b_depsgraph, BL::Context &b_context)
+{
+  BL::Scene b_scene = b_depsgraph.scene_eval();
+  ViewSettings view_settings(b_context);
+
+  render_params.frame = pxr::UsdTimeCode(b_scene.frame_current());
 }
 
 pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgraph *depsgraph, std::vector<std::vector<std::string>> materialx_data)
@@ -339,6 +357,24 @@ static PyObject *render_frame_finish_func(PyObject * /*self*/, PyObject *args)
 static PyObject *view_update_func(PyObject * /*self*/, PyObject *args)
 {
   LOG(INFO) << "view_update_func";
+  PyObject *pysession, *pydepsgraph, *pycontext, *pyspaceData, *pyregionData;
+
+  if (!PyArg_ParseTuple(args, "OOOOO", &pysession, &pydepsgraph, &pycontext, &pyspaceData, &pyregionData)) {
+    Py_RETURN_NONE;
+  }
+
+  PointerRNA depsgraphptr;
+  RNA_pointer_create(NULL, &RNA_Depsgraph, (ID *)PyLong_AsVoidPtr(pydepsgraph), &depsgraphptr);
+  BL::Depsgraph b_depsgraph(depsgraphptr);
+
+  PointerRNA contextptr;
+  RNA_pointer_create(NULL, &RNA_Context, (ID *)PyLong_AsVoidPtr(pycontext), &contextptr);
+  BL::Context b_context(contextptr);
+
+  BlenderSession *session = (BlenderSession *)PyLong_AsVoidPtr(pysession);
+
+  session->view_update(b_depsgraph, b_context);
+
   Py_RETURN_NONE;
 }
 

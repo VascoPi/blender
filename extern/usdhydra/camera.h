@@ -25,7 +25,7 @@ struct CameraData {
   float transform[4][4];
   float lens_shift[2];
   float ortho_size[2];
-  tuple<float, float, int> dof_size;
+  tuple<float, float, int> dof_data;
 };
 
 } // namespace usdhydra

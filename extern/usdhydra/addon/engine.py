@@ -94,6 +94,9 @@ class USDHydraEngine(bpy.types.RenderEngine):
             self.session = session_create(self)
 
         materialx_data = 5
+        session_reset(self.session, data, context, depsgraph, materialx_data,is_blender_scene, stage)
+        session_view_update(self.session, depsgraph, context, context.space_data, context.region_data)
+
 
         session_reset(self.session, data, context, depsgraph, materialx_data, is_blender_scene, stage)
 
@@ -122,4 +125,9 @@ def session_render(session, depsgraph):
 
 def session_view_draw(session, depsgraph, context, space_data, region_data):
     _usdhydra.session.view_draw(session, depsgraph.as_pointer(), context.as_pointer(),
+                             space_data.as_pointer(), region_data.as_pointer())
+
+
+def session_view_update(session, depsgraph, context, space_data, region_data):
+    _usdhydra.session.view_update(session, depsgraph.as_pointer(), context.as_pointer(),
                              space_data.as_pointer(), region_data.as_pointer())
