@@ -66,8 +66,8 @@ register_classes, unregister_classes = bpy.utils.register_classes_factory([
 
     light.USDHYDRA_LIGHT_PT_light,
 
-    material.USDHYDRA_MATERIAL_PT_context,
-    material.USDHYDRA_MATERIAL_PT_preview,
+    #material.USDHYDRA_MATERIAL_PT_context,
+    #material.USDHYDRA_MATERIAL_PT_preview,
     material.USDHYDRA_MATERIAL_OP_new_mx_node_tree,
     material.USDHYDRA_MATERIAL_OP_duplicate_mx_node_tree,
     material.USDHYDRA_MATERIAL_OP_convert_shader_to_mx,

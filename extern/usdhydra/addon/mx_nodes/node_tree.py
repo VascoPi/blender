@@ -11,7 +11,8 @@ import bpy
 
 from .nodes import get_mx_node_cls
 from ..utils import mx as mx_utils
-# from . import log
+from ..utils.logging import Log
+log = Log('ui.usd_nodes')
 
 
 NODE_LAYER_SEPARATION_WIDTH = 280
@@ -59,8 +60,11 @@ class MxNodeTree(bpy.types.ShaderNodeTree):
 
     def export(self) -> mx.Document:
         output_node = self.output_node
+        print("Output node start")
         if not output_node:
             return None
+
+        print("Output node finish")
 
         doc = mx.createDocument()
 

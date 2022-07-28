@@ -21,7 +21,7 @@ struct USDExporterContext {
   const pxr::SdfPath usd_path;
   const USDHierarchyIterator *hierarchy_iterator;
   const USDExportParams &export_params;
-  const std::vector<std::vector<std::string>> materialx_data;
+  const std::map<std::string, std::pair<std::string, std::string>> materialx_data;
 };
 
 }  // namespace blender::io::usd

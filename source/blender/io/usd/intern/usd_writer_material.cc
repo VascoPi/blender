@@ -127,22 +127,21 @@ void create_materialx(const USDExporterContext &usd_export_context,
     return;
   }
 
-  std::string s = usd_export_context.materialx_data[0][0];
-  std::string materialx_path = "d:/Material.mtlx";
   std::string mat_name =  material->id.name + 2;
- // std::vector<std::vector<std::string>>::iterator materialx_data_entry;
-//std::vector<std::vector<std::string>> materialx_data = usd_export_context.materialx_data;
-  //for (materialx_data_entry = materialx_data.begin(); materialx_data_entry != materialx_data.end();
-  //     ++materialx_data_entry) {
-//  std::string material_name = materialx_data[0];
-//  std::string materialx_path = materialx_data[1];
-//  std::string materialx_entry_point = materialx_data[2];
-//  printf("$s\n", usd_export_context.materialx_data);
+  std::pair<std::string, std::string> item = usd_export_context.materialx_data.find(mat_name)->second;
+
+  std::string materialx_path(item.first);
+  std::string materialx_entry_point(item.second);
 
   pxr::UsdPrim prim = usd_material.GetPrim();
   prim.GetReferences().AddReference(materialx_path, pxr::SdfPath("/MaterialX"));
-  usd_material.CreateSurfaceOutput().ConnectToSource(pxr::SdfPath("token outputs:surface.connect = </_materials/" + s + "/Materials/surfacematerial_2.outputs:mtlx:surface>"));
- // usd_material.CreateSurfaceOutput().ConnectToSource(pxr::SdfPath(materialx_entry_point));
+  prim.GetPath().AppendChild(pxr::TfToken("/Materials")).AppendChild(pxr::TfToken(materialx_entry_point));
+
+
+  //usd_material.CreateSurfaceOutput().ConnectToSource(
+  //    pxr::SdfPath("/_materials/" + mat_name + "/Materials/" + materialx_entry_point +
+  //                 ".outputs:mtlx:surface"));
+
  // usd_material.CreateSurfaceOutput().ConnectToSource(usd_material.ConnectableAPI(), usdtokens::surface);
 
 

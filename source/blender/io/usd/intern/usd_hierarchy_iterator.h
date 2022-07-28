@@ -26,7 +26,7 @@ class USDHierarchyIterator : public AbstractHierarchyIterator {
   const pxr::UsdStageRefPtr stage_;
   pxr::UsdTimeCode export_time_;
   const USDExportParams &params_;
-  std::vector<std::vector<std::string>> materialx_data_;
+  std::map<std::string, std::pair<std::string, std::string>> materialx_data_;
 
 
  public:
@@ -40,7 +40,7 @@ class USDHierarchyIterator : public AbstractHierarchyIterator {
                        Depsgraph *depsgraph,
                        pxr::UsdStageRefPtr stage,
                        const USDExportParams &params,
-                       std::vector<std::vector<std::string>> materialx_data);
+                       std::map<std::string, std::pair<std::string, std::string>> materialx_data);
 
   void set_export_frame(float frame_nr);
   std::string get_export_file_path() const;

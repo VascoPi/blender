@@ -5,8 +5,8 @@
 
 import bpy
 
-from ..utils import logging
-log = logging.Log("mx_nodes")
+from ..utils.logging import Log
+log = Log("mx_nodes")
 
 from . import node_tree, nodes
 

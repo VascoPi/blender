@@ -265,7 +265,7 @@ class MxNode(bpy.types.ShaderNode):
 
     # COMPUTE FUNCTION
     def compute(self, out_key, **kwargs):
-        log("compute", self, out_key)
+        # log("compute", self, out_key)
 
         doc = kwargs['doc']
         nodedef = self.nodedef
@@ -355,7 +355,7 @@ class MxNode(bpy.types.ShaderNode):
 
         link = socket_in.links[0]
         if not link.is_valid:
-            log.warn("Invalid link found", link, socket_in, self)
+            # log.warn("Invalid link found", link, socket_in, self)
             return None
 
         link = pass_node_reroute(link)
@@ -363,7 +363,7 @@ class MxNode(bpy.types.ShaderNode):
             return None
 
         if not is_mx_node_valid(link.from_node):
-            log.warn(f"Ignoring unsupported node {link.from_node.bl_idname}", link.from_node, link.from_node.id_data)
+            # log.warn(f"Ignoring unsupported node {link.from_node.bl_idname}", link.from_node, link.from_node.id_data)
             return None
 
         return self._compute_node(link.from_node, link.from_socket.name, **kwargs)

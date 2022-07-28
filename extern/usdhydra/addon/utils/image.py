@@ -22,7 +22,7 @@ def cache_image_file(image: bpy.types.Image, cache_check=True):
     image_path = Path(image.filepath_from_user())
     if not image.packed_file and image.source != 'GENERATED':
         if not image_path.is_file():
-            log.warn("Image is missing", image, image_path)
+            # log.warn("Image is missing", image, image_path)
             return None
 
         image_suffix = image_path.suffix.lower()

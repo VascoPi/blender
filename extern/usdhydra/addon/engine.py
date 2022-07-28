@@ -5,6 +5,7 @@
 
 import bpy
 import _usdhydra
+import MaterialX as mx
 
 from .usd_nodes import node_tree
 from .utils import stages
@@ -60,7 +61,9 @@ class USDHydraEngine(bpy.types.RenderEngine):
         if not self.session:
             self.session = session_create(self)
 
-        session_reset(self.session, data, bpy.context, depsgraph, is_blender_scene, stage)
+        materialx_data = self.get_materialx_data(data, depsgraph)
+        print(materialx_data)
+        session_reset(self.session, data, bpy.context, materialx_data, depsgraph, is_blender_scene, stage)
 
     def render(self, depsgraph):
         if not self.session:
@@ -93,18 +96,44 @@ class USDHydraEngine(bpy.types.RenderEngine):
         if not self.session:
             self.session = session_create(self)
 
-        materialx_data = 5
-        session_reset(self.session, data, context, depsgraph, materialx_data,is_blender_scene, stage)
-        session_view_update(self.session, depsgraph, context, context.space_data, context.region_data)
-
+        materialx_data = self.get_materialx_data(context, depsgraph)
 
         session_reset(self.session, data, context, depsgraph, materialx_data, is_blender_scene, stage)
+        session_view_update(self.session, depsgraph, context, context.space_data, context.region_data)
 
     def view_draw(self, context, depsgraph):
         if not self.session:
             return
 
         session_view_draw(self.session, depsgraph, context, context.space_data, context.region_data)
+
+
+    def get_materialx_data(self, context, depsgraph):
+        data =[]
+        for obj in bpy.context.scene.objects:
+            if obj.type in ('EMPTY', 'ARMATURE', 'LIGHT', 'CAMERA'):
+                continue
+
+            for mat_slot in obj.material_slots:
+                if not mat_slot:
+                    continue
+
+                mat = mat_slot.material
+
+                mx_file = _usdhydra.utils.get_temp_file(".mtlx", f'{mat.name}{mat.usdhydra.mx_node_tree.name if mat.usdhydra.mx_node_tree else ""}')
+                print(mx_file, str(mx_file))
+                doc = mat.usdhydra.export(obj)
+                if not doc:
+                    # log.warn("MX export failed", mat)
+                    return None
+                # self.nodedef.getOutput(self.outputs[out_key].name)
+
+                mx.writeToXmlFile(doc, str(mx_file).replace('/', "\\"))
+                surfacematerial = next((node for node in doc.getNodes() if node.getCategory() == 'surfacematerial'))
+
+                data.append((mat.name, str(mx_file), surfacematerial.getName()))
+
+        return tuple(data)
 
 
 def session_create(engine: USDHydraEngine):

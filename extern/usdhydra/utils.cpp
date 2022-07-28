@@ -73,10 +73,10 @@ static PyObject *get_temp_file_func(PyObject * /*self*/, PyObject *args)
   const char *suffix = "", *name = "";
   bool is_rand = false;
 
-  PyArg_ParseTuple(args, "ssp", &suffix, &name, &is_rand);
+  PyArg_ParseTuple(args, "ss", &suffix, &name);
 
-  filesystem::path path = usdhydra::get_temp_file(suffix, name, is_rand);
-  return PyUnicode_FromString(path.u8string().c_str());
+  auto path = usdhydra::get_temp_file(suffix, name, is_rand);
+  return PyUnicode_FromString(path.c_str());
 }
 
 static PyObject *get_temp_dir_func(PyObject * /*self*/, PyObject * /*args*/)

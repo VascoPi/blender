@@ -8,7 +8,7 @@ import bpy
 import traceback
 
 from . import USDHydraProperties
-#from ..mx_nodes.node_tree import MxNodeTree
+from ..mx_nodes.node_tree import MxNodeTree
 #from ..bl_nodes.nodes import ShaderNodeOutputMaterial
 from ..usd_nodes import node_tree as usd_node_tree
 #from ..engine.viewport_engine import ViewportEngineScene
@@ -21,29 +21,28 @@ from ..usd_nodes import node_tree as usd_node_tree
 class MaterialProperties(USDHydraProperties):
     bl_type = bpy.types.Material
 
-    # def update_mx_node_tree(self, context):
-    #     self.update()
+    def update_mx_node_tree(self, context):
+        self.update()
 
-    #mx_node_tree: bpy.props.PointerProperty(type=MxNodeTree, update=update_mx_node_tree)
-    mx_node_tree: bpy.props.PointerProperty(type=bpy.types.ShaderNodeTree) # need to be removed
+    mx_node_tree: bpy.props.PointerProperty(type=MxNodeTree, update=update_mx_node_tree)
+    #mx_node_tree: bpy.props.PointerProperty(type=bpy.types.ShaderNodeTree) # need to be removed
 
-    # @property
-    # def output_node(self):
-    #     material = self.id_data
-    #
-    #     if not material.node_tree:
-    #         return None
-    #
-    #     return next((node for node in material.node_tree.nodes if
-    #                  node.bl_idname == ShaderNodeOutputMaterial.__name__ and
-    #                  node.is_active_output), None)
+    @property
+    def output_node(self):
+        material = self.id_data
+
+        if not material.node_tree:
+            return None
+
+        # return next((node for node in material.node_tree.nodes if
+        #              node.bl_idname == ShaderNodeOutputMaterial.__name__ and
+        #              node.is_active_output), None)
 
     def export(self, obj: bpy.types.Object): #-> [mx.Document, None]:
-        return True
 
-        # if self.mx_node_tree:
-        #     return self.mx_node_tree.export()
-        #
+        if self.mx_node_tree:
+            return self.mx_node_tree.export()
+
         # material = self.id_data
         # output_node = self.output_node
         #
