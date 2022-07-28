@@ -48,7 +48,7 @@ filesystem::path get_temp_file(string suffix, string name, bool is_rand)
   auto filename = get_random_string(8);
   filesystem::path path;
   if (name.empty()) {
-    path = get_temp_pid_dir() / "tmp" / (filename + suffix);
+    path = get_temp_pid_dir() / ("tmp" +filename + suffix);
     ofstream(path.c_str());
 
     return path;
