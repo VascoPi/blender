@@ -9,7 +9,7 @@ from pathlib import Path
 import bpy
 import nodeitems_utils
 
-# from .. import log
+from .. import log
 from . import base_node, categories
 
 gen_modules = [importlib.import_module(f"usdhydra.mx_nodes.nodes.{f.name[:-len(f.suffix)]}")

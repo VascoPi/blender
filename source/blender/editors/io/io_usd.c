@@ -183,24 +183,19 @@ static void wm_usd_export_draw(bContext *UNUSED(C), wmOperator *op)
 
   box = uiLayoutBox(layout);
   col = uiLayoutColumnWithHeading(box, true, IFACE_("Materials"));
-  uiItemR(col, ptr, "export_materialx", 0, NULL, ICON_NONE);
+  uiItemR(col, ptr, "generate_preview_surface", 0, NULL, ICON_NONE);
   const bool export_mtl = RNA_boolean_get(ptr, "export_materials");
   uiLayoutSetActive(col, export_mtl);
 
   uiLayout *row = uiLayoutRow(col, true);
-  uiItemR(row, ptr, "generate_preview_surface", 0, NULL, ICON_NONE);
-  const bool export_mtlx = RNA_boolean_get(ptr, "export_materialx");
-  const bool preview = RNA_boolean_get(ptr, "generate_preview_surface");
-  uiLayoutSetActive(row, export_mtl && !export_mtlx);
-
-  row = uiLayoutRow(col, true);
   uiItemR(row, ptr, "export_textures", 0, NULL, ICON_NONE);
-  uiLayoutSetActive(row, export_mtl && preview && !export_mtlx);
+  const bool preview = RNA_boolean_get(ptr, "generate_preview_surface");
+  uiLayoutSetActive(row, export_mtl && preview);
 
   row = uiLayoutRow(col, true);
   uiItemR(row, ptr, "overwrite_textures", 0, NULL, ICON_NONE);
   const bool export_tex = RNA_boolean_get(ptr, "export_textures");
-  uiLayoutSetActive(row, export_mtl && preview && export_tex && !export_mtlx);
+  uiLayoutSetActive(row, export_mtl && preview && export_tex);
 
   box = uiLayoutBox(layout);
   col = uiLayoutColumnWithHeading(box, true, IFACE_("File References"));

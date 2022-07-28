@@ -43,12 +43,12 @@ filesystem::path get_temp_pid_dir(void)
   return path;
 }
 
-string get_temp_file(string suffix, string name, bool is_rand)
+filesystem::path get_temp_file(string suffix, string name, bool is_rand)
 {
   auto filename = get_random_string(8);
-  string path;
+  filesystem::path path;
   if (name.empty()) {
-    path = get_temp_pid_dir().u8string() + "/tmp" + filename + suffix;
+    path = get_temp_pid_dir() / "tmp" / (filename + suffix);
     ofstream(path.c_str());
 
     return path;
@@ -56,7 +56,7 @@ string get_temp_file(string suffix, string name, bool is_rand)
 
   if (!suffix.empty()) {
     if (is_rand) {
-      path = get_temp_pid_dir().u8string() + "/" + name + "_" + filename + suffix;
+      path = get_temp_pid_dir() / (name + "_" + filename + suffix);
       ofstream(path.c_str());
 
       return path;
@@ -65,7 +65,7 @@ string get_temp_file(string suffix, string name, bool is_rand)
     name += suffix;
   }
 
-  return get_temp_pid_dir().u8string() + "/" + name;
+  return get_temp_pid_dir() / name;
 }
 
 static PyObject *get_temp_file_func(PyObject * /*self*/, PyObject *args)
@@ -73,10 +73,10 @@ static PyObject *get_temp_file_func(PyObject * /*self*/, PyObject *args)
   const char *suffix = "", *name = "";
   bool is_rand = false;
 
-  PyArg_ParseTuple(args, "ss", &suffix, &name);
+  PyArg_ParseTuple(args, "ssp", &suffix, &name, &is_rand);
 
   auto path = usdhydra::get_temp_file(suffix, name, is_rand);
-  return PyUnicode_FromString(path.c_str());
+  return PyUnicode_FromString(path.u8string().c_str());
 }
 
 static PyObject *get_temp_dir_func(PyObject * /*self*/, PyObject * /*args*/)

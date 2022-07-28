@@ -303,7 +303,6 @@ static PyObject *reset_func(PyObject * /*self*/, PyObject *args)
   int stageId = 0;
   int is_blender_scene = 1;
 
-
   if (!PyArg_ParseTuple(args, "OOOOOii", &pysession, &pydata, &pycontext, &pydepsgraph, &materialx_data_, &is_blender_scene, &stageId)) {
     Py_RETURN_NONE;
   }
@@ -332,8 +331,6 @@ static PyObject *reset_func(PyObject * /*self*/, PyObject *args)
       if (!next) {
           break;
       }
-
-      std::vector<std::string> item;
 
       char *i0 = nullptr;
       char *i1 = nullptr;

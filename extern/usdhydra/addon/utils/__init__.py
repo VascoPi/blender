@@ -7,6 +7,9 @@ from pathlib import Path
 
 import bpy
 
+from .logging import Log
+log = Log("utils")
+
 
 BLENDER_VERSION = f'{bpy.app.version[0]}.{bpy.app.version[1]}'
 LIBS_DIR = Path(f"{bpy.utils.resource_path('LOCAL')}/datafiles/MaterialX")

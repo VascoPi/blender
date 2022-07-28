@@ -25,7 +25,6 @@ class MaterialProperties(USDHydraProperties):
         self.update()
 
     mx_node_tree: bpy.props.PointerProperty(type=MxNodeTree, update=update_mx_node_tree)
-    #mx_node_tree: bpy.props.PointerProperty(type=bpy.types.ShaderNodeTree) # need to be removed
 
     @property
     def output_node(self):
