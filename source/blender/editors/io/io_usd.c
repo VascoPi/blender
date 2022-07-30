@@ -299,9 +299,9 @@ void WM_OT_usd_export(struct wmOperatorType *ot)
                   "Generate an approximate USD Preview Surface shader "
                   "representation of a Principled BSDF node network");
 
-    RNA_def_boolean(ot->srna,
+  RNA_def_boolean(ot->srna,
                   "export_materialx",
-                  true,
+                  false,
                   "To MaterialX",
                   "Generate an approximate MaterialX shader "
                   "representation of a Principled BSDF node network");

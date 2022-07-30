@@ -214,7 +214,17 @@ pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, D
   usd_export_params.visible_objects_only = false;
   usd_export_params.export_materialx = true;
 
-  blender::io::usd::USDHierarchyIterator iter(bmain, depsgraph, usd_stage, usd_export_params, materialx_data);
+  if (!materialx_data.empty()) {
+    blender::io::usd::USDHierarchyIterator iter(bmain, depsgraph, usd_stage, usd_export_params, materialx_data);
+    iter.iterate_and_write();
+    iter.release_writers();
+  }
+  else {
+    blender::io::usd::USDHierarchyIterator iter(bmain, depsgraph, usd_stage, usd_export_params);
+    iter.iterate_and_write();
+    iter.release_writers();
+  }
+  
 
   //if (data->params.export_animation) {
   //  /* Writing the animated frames is not 100% of the work, but it's our best guess. */
@@ -241,9 +251,6 @@ pxr::UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, D
   //  /* If we're not animating, a single iteration over all objects is enough. */
   //  iter.iterate_and_write();
   //}
-
-  iter.iterate_and_write();
-  iter.release_writers();
 
   /* Finish up by going back to the keyframe that was current before we started. */
   if (CFRA != orig_frame) {

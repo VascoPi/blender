@@ -90,7 +90,8 @@ using InputSpecMap = std::map<std::string, InputSpec>;
 /* Static function forward declarations. */
 static pxr::UsdShadeShader create_materialx(const USDExporterContext &usd_export_context,
                                                      pxr::UsdShadeMaterial &material,
-                                                     bNode *node);
+                                                     bNode *node,
+                                                     pxr::UsdGeomMesh &usd_mesh);
 static pxr::UsdShadeShader create_usd_preview_shader(const USDExporterContext &usd_export_context,
                                                      pxr::UsdShadeMaterial &material,
                                                      const char *name,
@@ -119,8 +120,9 @@ void create_input(pxr::UsdShadeShader &shader, const InputSpec &spec, const void
 
 void create_materialx(const USDExporterContext &usd_export_context,
                                          Material *material,
-                                         pxr::UsdShadeMaterial &usd_material)
-{
+                                         pxr::UsdShadeMaterial &usd_material,
+                                         pxr::UsdGeomMesh &usd_mesh)
+ {
   if (!material) {
     return;
   }
@@ -129,20 +131,22 @@ void create_materialx(const USDExporterContext &usd_export_context,
   std::pair<std::string, std::string> item = usd_export_context.materialx_data.find(mat_name)->second;
 
   std::string materialx_path(item.first);
-  std::string materialx_entry_point(item.second);
+  std::string surfacematerial(item.second);
 
   pxr::UsdPrim prim = usd_material.GetPrim();
   prim.GetReferences().AddReference(materialx_path, pxr::SdfPath("/MaterialX"));
-  prim.GetPath().AppendChild(pxr::TfToken("/Materials")).AppendChild(pxr::TfToken(materialx_entry_point));
+  prim.GetPath()
+      .AppendChild(pxr::TfToken("/Materials"))
+      .AppendChild(pxr::TfToken(surfacematerial));
 
+  pxr::UsdPrim prim_mesh = usd_mesh.GetPrim();
+  pxr::SdfPath mat_path = prim_mesh.GetParent().GetPath().AppendChild(pxr::TfToken(mat_name));
+  pxr::UsdPrim prim_mat = usd_export_context.stage->DefinePrim(mat_path);
+  prim_mat.GetReferences().AddInternalReference(prim.GetPath());
 
-  //usd_material.CreateSurfaceOutput().ConnectToSource(
-  //    pxr::SdfPath("/_materials/" + mat_name + "/Materials/" + materialx_entry_point +
-  //                 ".outputs:mtlx:surface"));
-
- // usd_material.CreateSurfaceOutput().ConnectToSource(usd_material.ConnectableAPI(), usdtokens::surface);
-
-
+  usd_material = pxr::UsdShadeMaterial::Define(usd_export_context.stage, prim_mat.GetPath()
+                                                   .AppendChild(pxr::TfToken("Materials"))
+                                                   .AppendChild(pxr::TfToken(surfacematerial)));
 }
 
 void create_usd_preview_surface_material(const USDExporterContext &usd_export_context,

@@ -345,7 +345,7 @@ void USDGenericMeshWriter::assign_materials(const HierarchyContext &context,
       continue;
     }
 
-    pxr::UsdShadeMaterial usd_material = ensure_usd_material(context, material);
+    pxr::UsdShadeMaterial usd_material = ensure_usd_material(context, material, &usd_mesh);
     material_binding_api.Bind(usd_material);
 
     /* USD seems to support neither per-material nor per-face-group double-sidedness, so we just
@@ -379,8 +379,10 @@ void USDGenericMeshWriter::assign_materials(const HierarchyContext &context,
       continue;
     }
 
-    pxr::UsdShadeMaterial usd_material = ensure_usd_material(context, material);
-    pxr::TfToken material_name = usd_material.GetPath().GetNameToken();
+    std::string mat_name = material->id.name + 2;
+    pxr::UsdShadeMaterial usd_material = ensure_usd_material(context, material, &usd_mesh);
+    pxr::TfToken material_name = pxr::TfToken(mat_name);
+
 
     pxr::UsdGeomSubset usd_face_subset = material_binding_api.CreateMaterialBindSubset(
         material_name, face_indices);

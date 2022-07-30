@@ -8,6 +8,7 @@
 #include <pxr/usd/sdf/path.h>
 #include <pxr/usd/usd/stage.h>
 #include <pxr/usd/usdShade/material.h>
+#include <pxr/usd/usdGeom/mesh.h>
 #include <pxr/usd/usdUtils/sparseValueWriter.h>
 
 #include <vector>
@@ -54,7 +55,9 @@ class USDAbstractWriter : public AbstractHierarchyWriter {
   std::string get_export_file_path() const;
   pxr::UsdTimeCode get_export_time_code() const;
 
-  pxr::UsdShadeMaterial ensure_usd_material(const HierarchyContext &context, Material *material);
+  pxr::UsdShadeMaterial ensure_usd_material(const HierarchyContext &context,
+                                            Material *material,
+                                            pxr::UsdGeomMesh *usd_mesh);
 
   void write_visibility(const HierarchyContext &context,
                         const pxr::UsdTimeCode timecode,

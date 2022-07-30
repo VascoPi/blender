@@ -6,12 +6,13 @@
 from collections import defaultdict
 
 import MaterialX as mx
+from pathlib import Path
 
 import bpy
 
 from .nodes import get_mx_node_cls
 from ..utils import mx as mx_utils
-# from . import log
+from . import log
 
 
 NODE_LAYER_SEPARATION_WIDTH = 280
@@ -68,7 +69,21 @@ class MxNodeTree(bpy.types.ShaderNodeTree):
         if not surfacematerial:
             return None
 
+        self.export_includes(doc)
+
         return doc
+
+    def export_includes(self, doc):
+        MX_LIBS_FOLDER = "libraries"
+        MX_LIBS_DIR = Path(bpy.utils.system_resource('DATAFILES', path='MaterialX'))/MX_LIBS_FOLDER
+
+        # we need to export every deps only once
+        unique_paths = set(node._file_path for node in self.nodes)
+
+        for mtlx_path in unique_paths:
+            # defining paths
+            source_path = MX_LIBS_DIR.parent / mtlx_path
+            mx.prependXInclude(doc, str(source_path))
 
     def import_(self, doc: mx.Document, file_path):
         def prepare_for_import():
