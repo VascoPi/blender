@@ -100,16 +100,16 @@ static void create_uvmap_shader(const USDExporterContext &usd_export_context,
                                 pxr::UsdShadeMaterial &usd_material,
                                 pxr::UsdShadeShader &usd_tex_shader,
                                 const pxr::TfToken &default_uv);
-static void export_texture(bNode *node,
+void export_texture(bNode *node,
                            const pxr::UsdStageRefPtr stage,
-                           const bool allow_overwrite = false);
+                           const bool allow_overwrite);
 static bNode *find_bsdf_node(Material *material);
 static void get_absolute_path(Image *ima, char *r_path);
-static std::string get_tex_image_asset_path(bNode *node,
+std::string get_tex_image_asset_path(bNode *node,
                                             const pxr::UsdStageRefPtr stage,
                                             const USDExportParams &export_params);
 static InputSpecMap &preview_surface_input_map();
-static bNode *traverse_channel(bNodeSocket *input, short target_type);
+bNode *traverse_channel(bNodeSocket *input, short target_type);
 
 template<typename T1, typename T2>
 void create_input(pxr::UsdShadeShader &shader, const InputSpec &spec, const void *value);
@@ -428,7 +428,7 @@ static pxr::TfToken get_node_tex_image_color_space(bNode *node)
 
 /* Search the upstream nodes connected to the given socket and return the first occurrence
  * of the node of the given type. Return null if no node of this type was found. */
-static bNode *traverse_channel(bNodeSocket *input, const short target_type)
+bNode *traverse_channel(bNodeSocket *input, const short target_type)
 {
   if (!input->link) {
     return nullptr;
@@ -541,7 +541,7 @@ static std::string get_tex_image_asset_path(Image *ima)
  * generated based on the image name for in-memory textures when exporting textures.
  * This function may return an empty string if the image does not have a filepath
  * assigned and no asset path could be determined. */
-static std::string get_tex_image_asset_path(bNode *node,
+std::string get_tex_image_asset_path(bNode *node,
                                             const pxr::UsdStageRefPtr stage,
                                             const USDExportParams &export_params)
 {
@@ -703,7 +703,7 @@ static void copy_single_file(Image *ima, const std::string &dest_dir, const bool
 /* Export the given texture node's image to a 'textures' directory
  * next to given stage's root layer USD.
  * Based on ImagesExporter::export_UV_Image() */
-static void export_texture(bNode *node,
+void export_texture(bNode *node,
                            const pxr::UsdStageRefPtr stage,
                            const bool allow_overwrite)
 {

@@ -315,6 +315,13 @@ UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgr
 
   DEG_graph_build_for_all_objects(depsgraph);
 
+  bContext *C = (bContext *)b_context.ptr.data;
+  Main *bmain = CTX_data_main(C);
+  USDExportParams usd_export_params;
+
+  usd_export_params.selected_objects_only = false;
+  usd_export_params.visible_objects_only = false;
+
   string filepath = usdhydra::get_temp_file(".usda");
   UsdStageRefPtr usd_stage = UsdStage::CreateNew(filepath);
 
@@ -330,12 +337,7 @@ UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgr
     usd_stage->SetEndTimeCode(scene->r.efra);
   }*/
 
-  bContext *C = (bContext *)b_context.ptr.data;
-  Main *bmain = CTX_data_main(C);
-  USDExportParams usd_export_params;
 
-  usd_export_params.selected_objects_only = false;
-  usd_export_params.visible_objects_only = false;
 
   blender::io::usd::USDHierarchyIterator iter(bmain, depsgraph, usd_stage, usd_export_params);
 

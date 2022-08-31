@@ -12,6 +12,7 @@ struct Material;
 struct USDExportParams;
 struct bNode;
 struct bNodeTree;
+struct bNodeSocket;
 
 namespace blender::io::usd {
 
@@ -39,5 +40,15 @@ void create_usd_preview_surface_material(const USDExporterContext &usd_export_co
 void create_usd_viewport_material(const USDExporterContext &usd_export_context,
                                   Material *material,
                                   pxr::UsdShadeMaterial &usd_material);
+
+std::string get_tex_image_asset_path(bNode *node,
+                                            const pxr::UsdStageRefPtr stage,
+                                            const USDExportParams &export_params);
+
+bNode *traverse_channel(bNodeSocket *input, short target_type);
+
+void export_texture(bNode *node,
+                           const pxr::UsdStageRefPtr stage,
+                           const bool allow_overwrite = false);
 
 }  // namespace blender::io::usd
