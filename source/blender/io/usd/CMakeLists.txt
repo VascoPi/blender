@@ -73,6 +73,7 @@ set(SRC
   intern/usd_writer_metaball.cc
   intern/usd_writer_transform.cc
   intern/usd_writer_volume.cc
+  intern/usd_writer_world.cc
 
   intern/usd_reader_camera.cc
   intern/usd_reader_curve.cc
@@ -100,6 +101,7 @@ set(SRC
   intern/usd_writer_metaball.h
   intern/usd_writer_transform.h
   intern/usd_writer_volume.h
+  intern/usd_writer_world.h
 
   intern/usd_reader_camera.h
   intern/usd_reader_curve.h

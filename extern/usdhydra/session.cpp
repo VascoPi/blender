@@ -17,6 +17,7 @@
 #include "usdImagingLite/engine.h"
 #include "usdImagingLite/renderParams.h"
 #include "session.h"
+#include <intern/usd_writer_world.h>
 
 using namespace pxr;
 
@@ -310,6 +311,7 @@ UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgr
   LOG(INFO) << "export_scene_to_usd";
 
   Scene *scene = DEG_get_input_scene(depsgraph);
+  World *world = scene->world;
 
   DEG_graph_build_for_all_objects(depsgraph);
 
@@ -320,6 +322,7 @@ UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgr
   usd_stage->SetMetadata(UsdGeomTokens->metersPerUnit, static_cast<double>(scene->unit.scale_length));
   usd_stage->GetRootLayer()->SetDocumentation(std::string("Blender v") + BKE_blender_version_string());
 
+  blender::io::usd::create_world(usd_stage, world);
   /* Set up the stage for animated data. */
   /*if (data->params.export_animation) {
     usd_stage->SetTimeCodesPerSecond(FPS);
@@ -364,6 +367,11 @@ UsdStageRefPtr BlenderSession::export_scene_to_usd(BL::Context b_context, Depsgr
 
   iter.iterate_and_write();
   iter.release_writers();
+
+  string s;
+  usd_stage->ExportToString(&s);
+  usd_stage->Export("d:\\test.usda");
+  printf("%s\n", s.c_str());
 
   return usd_stage;
 }
