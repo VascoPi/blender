@@ -21,7 +21,7 @@ auto get_value(const void *value)
   const T1 *cast_value = static_cast<const T1 *>(value);
   return T2(cast_value->value);
 }
-void create_world(const pxr::UsdStageRefPtr stage, World *world)
+void create_world(const pxr::UsdStageRefPtr stage, World *world, const char *render_delegate)
 {
   if (!world) {
     return;
@@ -59,8 +59,16 @@ void create_world(const pxr::UsdStageRefPtr stage, World *world)
           texattr.Set(pxr::VtValue(pxr::SdfAssetPath(imagePath)));
         }
 
-//        pxr::UsdGeomXformOp xOp = world_light.AddRotateXOp();
-//        pxr::UsdGeomXformOp yOp = world_light.AddRotateYOp();
+        pxr::UsdGeomXformOp xOp = world_light.AddRotateXOp();
+        pxr::UsdGeomXformOp yOp = world_light.AddRotateYOp();
+
+        if (strcmp(render_delegate, "HdStormRendererPlugin") == 0){
+          yOp.Set(90.0f);
+        }
+        else if (strcmp(render_delegate, "HdRprPlugin") == 0){
+          xOp.Set(180.0f);
+          yOp.Set(-90.0f);
+        }
 //
 //        pxr::UsdVariantSet vset = world_prim.GetVariantSets().AddVariantSet(pxr::TfToken("delegate"));
 //        vset.AddVariant(pxr::TfToken("HdRprPlugin"));

@@ -8,7 +8,7 @@
 
 namespace blender::io::usd {
 
-void create_world(const pxr::UsdStageRefPtr stage, World *world);
+void create_world(const pxr::UsdStageRefPtr stage, World *world, const char *render_delegate);
 static bNode *find_background_node(World *world);
 
 }  // namespace blender::io::usd

@@ -62,7 +62,7 @@ class USDHydraEngine(bpy.types.RenderEngine):
 
         self.bl_use_gpu_context = depsgraph.scene.usdhydra.final.is_gl_delegate
 
-        session_reset(self.session, data, bpy.context, depsgraph, is_blender_scene, stage)
+        session_reset(self.session, data, bpy.context, depsgraph, is_blender_scene, stage, stage, depsgraph.scene.usdhydra.final.delegate)
         session_final_update(self.session, depsgraph)
 
     def render(self, depsgraph):
@@ -96,7 +96,7 @@ class USDHydraEngine(bpy.types.RenderEngine):
         if not self.session:
             self.session = session_create(self)
 
-        session_reset(self.session, data, context, depsgraph, is_blender_scene, stage)
+        session_reset(self.session, data, context, depsgraph, is_blender_scene, stage, depsgraph.scene.usdhydra.viewport.delegate)
         session_view_update(self.session, depsgraph, context, context.space_data, context.region_data)
 
     def view_draw(self, context, depsgraph):
@@ -114,8 +114,8 @@ def session_free(session):
     _usdhydra.session.free(session)
 
 
-def session_reset(session, data, context, depsgraph, is_blender_scene, stage):
-    _usdhydra.session.reset(session, data.as_pointer(), context.as_pointer(), depsgraph.as_pointer(), is_blender_scene, stage)
+def session_reset(session, data, context, depsgraph, is_blender_scene, stage, delegate):
+    _usdhydra.session.reset(session, data.as_pointer(), context.as_pointer(), depsgraph.as_pointer(), is_blender_scene, stage, delegate)
 
 
 def session_render(session, depsgraph):

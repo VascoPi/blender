@@ -37,14 +37,14 @@ public:
   ~BlenderSession();
 
   void create();
-  void reset(BL::Context b_context, Depsgraph *depsgraph, bool is_blender_scene, int stageId);
+  void reset(BL::Context b_context, Depsgraph *depsgraph, bool is_blender_scene, int stageId,  const char *render_delegate);
   void render(BL::Depsgraph &b_depsgraph, const char *render_delegate);
   void render_gl(BL::Depsgraph &b_depsgraph, const char *render_delegate);
   void view_draw(BL::Depsgraph &b_depsgraph, BL::Context &b_context);
   void view_update(BL::Depsgraph &b_depsgraph, BL::Context &b_context, const char *render_delegate);
   void sync(BL::Depsgraph &b_depsgraph, BL::Context &b_context);
   void sync_final_render(BL::Depsgraph &b_depsgraph);
-  pxr::UsdStageRefPtr export_scene_to_usd(BL::Context b_context, Depsgraph *depsgraph);
+  pxr::UsdStageRefPtr export_scene_to_usd(BL::Context b_context, Depsgraph *depsgraph, const char *render_delegate);
 
   template <typename T>
   float get_renderer_percent_done(T *renderer)
