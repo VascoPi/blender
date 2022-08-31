@@ -62,7 +62,7 @@ class USDHydraEngine(bpy.types.RenderEngine):
 
         self.bl_use_gpu_context = depsgraph.scene.usdhydra.final.is_gl_delegate
 
-        session_reset(self.session, data, bpy.context, depsgraph, is_blender_scene, stage, stage, depsgraph.scene.usdhydra.final.delegate)
+        session_reset(self.session, data, bpy.context, depsgraph, is_blender_scene, stage, depsgraph.scene.usdhydra.final.delegate)
         session_final_update(self.session, depsgraph)
 
     def render(self, depsgraph):
