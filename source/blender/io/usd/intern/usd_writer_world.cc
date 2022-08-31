@@ -56,21 +56,24 @@ void create_world(const pxr::UsdStageRefPtr stage, World *world, const char *ren
         }
 
         if (!imagePath.empty()) {
-          world_light.OrientToStageUpAxis();
           pxr::UsdAttribute texattr = world_light.CreateTextureFileAttr(pxr::VtValue(pxr::SdfAssetPath(imagePath)));
           texattr.Set(pxr::VtValue(pxr::SdfAssetPath(imagePath)));
+
+          world_light.OrientToStageUpAxis();
+
+          pxr::UsdGeomXformOp xOp = world_light.AddRotateXOp();
+          pxr::UsdGeomXformOp yOp = world_light.AddRotateYOp();
+
+          if (strcmp(render_delegate, "HdStormRendererPlugin") == 0){
+            yOp.Set(90.0f);
+          }
+          else if (strcmp(render_delegate, "HdRprPlugin") == 0){
+            xOp.Set(180.0f);
+            yOp.Set(-90.0f);
+          }
         }
 
-        pxr::UsdGeomXformOp xOp = world_light.AddRotateXOp();
-        pxr::UsdGeomXformOp yOp = world_light.AddRotateYOp();
 
-        if (strcmp(render_delegate, "HdStormRendererPlugin") == 0){
-          yOp.Set(90.0f);
-        }
-        else if (strcmp(render_delegate, "HdRprPlugin") == 0){
-          xOp.Set(180.0f);
-          yOp.Set(-90.0f);
-        }
       }
     }
     else if (std::string(sock->name) == "Strength"){
