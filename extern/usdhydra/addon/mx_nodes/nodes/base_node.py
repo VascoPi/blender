@@ -11,6 +11,7 @@ from ...utils import title_str, code_str, pass_node_reroute, BLENDER_VERSION
 from ...utils import mx as mx_utils
 from . import log
 
+MTLX_DOC = {}
 
 class MxNodeInputSocket(bpy.types.NodeSocket):
     bl_idname = 'usdhydra.MxNodeInputSocket'
@@ -21,7 +22,7 @@ class MxNodeInputSocket(bpy.types.NodeSocket):
             return
 
         nd = node.nodedef
-        nd_input = nd.getInput(self.name)
+        nd_input = nd.getActiveInput(self.name)
         nd_type = nd_input.getType()
 
         uiname = mx_utils.get_attr(nd_input, 'uiname', title_str(nd_input.getName()))
@@ -37,7 +38,7 @@ class MxNodeInputSocket(bpy.types.NodeSocket):
 
 
     def draw_color(self, context, node):
-        return mx_utils.get_socket_color(node.nodedef.getInput(self.name).getType()
+        return mx_utils.get_socket_color(node.nodedef.getActiveInput(self.name).getType()
                                          if is_mx_node_valid(node) else 'undefined')
 
 
@@ -50,16 +51,16 @@ class MxNodeOutputSocket(bpy.types.NodeSocket):
             return
 
         nd = node.nodedef
-        mx_output = nd.getOutput(self.name)
+        mx_output = nd.getActiveOutput(self.name)
         uiname = mx_utils.get_attr(mx_output, 'uiname', title_str(mx_output.getName()))
         uitype = title_str(mx_output.getType())
-        if uiname.lower() == uitype.lower() or len(nd.getOutputs()) == 1:
+        if uiname.lower() == uitype.lower() or len(nd.getActiveOutputs()) == 1:
             layout.label(text=uitype)
         else:
             layout.label(text=f"{uiname}: {uitype}")
 
     def draw_color(self, context, node):
-        return mx_utils.get_socket_color(node.nodedef.getOutput(self.name).getType()
+        return mx_utils.get_socket_color(node.nodedef.getActiveOutput(self.name).getType()
                                          if is_mx_node_valid(node) else 'undefined')
 
 
@@ -82,9 +83,7 @@ class MxNode(bpy.types.ShaderNode):
     def get_nodedef(cls, data_type):
         if not cls._data_types[data_type]['nd']:
             # loading nodedefs
-            doc = mx.createDocument()
-            search_path = mx.FileSearchPath(str(mx_utils.MX_LIBS_DIR))
-            mx.readFromXmlFile(doc, str(mx_utils.MX_LIBS_DIR / cls._file_path), searchPath=search_path)
+            doc = get_doc(cls._file_path)
             for val in cls._data_types.values():
                 val['nd'] = doc.getNodeDef(val['nd_name'])
 
@@ -102,7 +101,7 @@ class MxNode(bpy.types.ShaderNode):
     @property
     def mx_node_path(self):
         nd = self.nodedef
-        if '/' in self.name or mx_utils.is_shader_type(nd.getOutputs()[0].getType()):
+        if '/' in self.name or mx_utils.is_shader_type(nd.getActiveOutputs()[0].getType()):
             return self.name
 
         return f"NG/{self.name}"
@@ -122,7 +121,7 @@ class MxNode(bpy.types.ShaderNode):
         nodedef = self.nodedef
         for i, nd_input in enumerate(mx_utils.get_nodedef_inputs(nodedef, False)):
             self.inputs[i].name = nd_input.getName()
-        for i, nd_output in enumerate(nodedef.getOutputs()):
+        for i, nd_output in enumerate(nodedef.getActiveOutputs()):
             self.outputs[i].name = nd_output.getName()
 
     def init(self, context):
@@ -132,7 +131,7 @@ class MxNode(bpy.types.ShaderNode):
             for nd_input in mx_utils.get_nodedef_inputs(nodedef, False):
                 self.create_input(nd_input)
 
-            for nd_output in nodedef.getOutputs():
+            for nd_output in nodedef.getActiveOutputs():
                 self.create_output(nd_output)
 
             if self._ui_folders:
@@ -195,8 +194,8 @@ class MxNode(bpy.types.ShaderNode):
 
         for i, socket_in in enumerate(self.inputs):
             nd = self.nodedef
-            uiname = mx_utils.get_attr(nd.getInput(socket_in.name), 'uiname',
-                                       title_str(nd.getInput(socket_in.name).getName()))
+            uiname = mx_utils.get_attr(nd.getActiveInput(socket_in.name), 'uiname',
+                                       title_str(nd.getActiveInput(socket_in.name).getName()))
             if socket_in.is_linked:
                 link = next((link for link in socket_in.links if link.is_valid), None)
                 if not link:
@@ -238,7 +237,7 @@ class MxNode(bpy.types.ShaderNode):
                     link.from_node.draw_node_view(context, layout)
 
             else:
-                mx_input = self.nodedef.getInput(socket_in.name)
+                mx_input = self.nodedef.getActiveInput(socket_in.name)
                 f = mx_input.getAttribute('uifolder')
                 is_draw = True
                 if f:
@@ -322,7 +321,7 @@ class MxNode(bpy.types.ShaderNode):
             mx_param = mx_node.addInput(nd_input.getName(), nd_type)
             mx_utils.set_param_value(mx_param, val, nd_type)
 
-        if len(nodedef.getOutputs()) > 1:
+        if len(nodedef.getActiveOutputs()) > 1:
             mx_node.setType('multioutput')
             return mx_node, nd_output
 
@@ -382,10 +381,10 @@ class MxNode(bpy.types.ShaderNode):
         return getattr(self, self._input_prop_name(name))
 
     def get_nodedef_input(self, in_key: [str, int]):
-        return self.nodedef.getInput(self.inputs[in_key].name)
+        return self.nodedef.getActiveInput(self.inputs[in_key].name)
 
     def get_nodedef_output(self, out_key: [str, int]):
-        return self.nodedef.getOutput(self.outputs[out_key].name)
+        return self.nodedef.getActiveOutput(self.outputs[out_key].name)
 
     def set_input_value(self, in_key, value):
         setattr(self, self._input_prop_name(self.inputs[in_key].name), value)
@@ -446,3 +445,13 @@ class MxNode(bpy.types.ShaderNode):
 def is_mx_node_valid(node):
     # handle MaterialX 1.37 nodes
     return hasattr(node, 'nodedef')
+
+
+def get_doc(filepath):
+    if filepath not in MTLX_DOC:
+        doc = mx.createDocument()
+        search_path = mx.FileSearchPath(str(mx_utils.MX_LIBS_DIR))
+        mx.readFromXmlFile(doc, str(mx_utils.MX_LIBS_DIR / filepath), searchPath=search_path)
+        MTLX_DOC[filepath] = doc
+
+    return MTLX_DOC[filepath]

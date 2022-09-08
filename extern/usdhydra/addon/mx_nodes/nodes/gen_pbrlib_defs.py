@@ -25,7 +25,7 @@ class MxNode_PBR_oren_nayar_diffuse_bsdf(MxNode):
 
     bl_label = 'Oren nayar diffuse bsdf'
     bl_idname = 'usdhydra.MxNode_PBR_oren_nayar_diffuse_bsdf'
-    bl_description = "A BSDF node for diffuse reflections"
+    bl_description = "A BSDF node for diffuse reflections."
 
     category = 'PBR'
 
@@ -44,7 +44,7 @@ class MxNode_PBR_burley_diffuse_bsdf(MxNode):
 
     bl_label = 'Burley diffuse bsdf'
     bl_idname = 'usdhydra.MxNode_PBR_burley_diffuse_bsdf'
-    bl_description = "A BSDF node for Burley diffuse reflections"
+    bl_description = "A BSDF node for Burley diffuse reflections."
 
     category = 'PBR'
 
@@ -63,7 +63,7 @@ class MxNode_PBR_translucent_bsdf(MxNode):
 
     bl_label = 'Translucent bsdf'
     bl_idname = 'usdhydra.MxNode_PBR_translucent_bsdf'
-    bl_description = "A BSDF node for pure diffuse transmission"
+    bl_description = "A BSDF node for pure diffuse transmission."
 
     category = 'PBR'
 
@@ -81,7 +81,7 @@ class MxNode_PBR_dielectric_bsdf(MxNode):
 
     bl_label = 'Dielectric bsdf'
     bl_idname = 'usdhydra.MxNode_PBR_dielectric_bsdf'
-    bl_description = "A reflection/transmission BSDF node based on a microfacet model and a Fresnel curve for dielectrics"
+    bl_description = "A reflection/transmission BSDF node based on a microfacet model and a Fresnel curve for dielectrics."
 
     category = 'PBR'
 
@@ -104,7 +104,7 @@ class MxNode_PBR_conductor_bsdf(MxNode):
 
     bl_label = 'Conductor bsdf'
     bl_idname = 'usdhydra.MxNode_PBR_conductor_bsdf'
-    bl_description = "A reflection BSDF node based on a microfacet model and a Fresnel curve for conductors/metals"
+    bl_description = "A reflection BSDF node based on a microfacet model and a Fresnel curve for conductors/metals."
 
     category = 'PBR'
 
@@ -126,7 +126,7 @@ class MxNode_PBR_generalized_schlick_bsdf(MxNode):
 
     bl_label = 'Generalized schlick bsdf'
     bl_idname = 'usdhydra.MxNode_PBR_generalized_schlick_bsdf'
-    bl_description = "A reflection/transmission BSDF node based on a microfacet model and a generalized Schlick Fresnel curve"
+    bl_description = "A reflection/transmission BSDF node based on a microfacet model and a generalized Schlick Fresnel curve."
 
     category = 'PBR'
 
@@ -150,7 +150,7 @@ class MxNode_PBR_subsurface_bsdf(MxNode):
 
     bl_label = 'Subsurface bsdf'
     bl_idname = 'usdhydra.MxNode_PBR_subsurface_bsdf'
-    bl_description = "A subsurface scattering BSDF for true subsurface scattering"
+    bl_description = "A subsurface scattering BSDF for true subsurface scattering."
 
     category = 'PBR'
 
@@ -170,7 +170,7 @@ class MxNode_PBR_sheen_bsdf(MxNode):
 
     bl_label = 'Sheen bsdf'
     bl_idname = 'usdhydra.MxNode_PBR_sheen_bsdf'
-    bl_description = "A microfacet BSDF for the back-scattering properties of cloth-like materials"
+    bl_description = "A microfacet BSDF for the back-scattering properties of cloth-like materials."
 
     category = 'PBR'
 
@@ -189,7 +189,7 @@ class MxNode_PBR_thin_film_bsdf(MxNode):
 
     bl_label = 'Thin film bsdf'
     bl_idname = 'usdhydra.MxNode_PBR_thin_film_bsdf'
-    bl_description = "Adds an iridescent thin film layer over a microfacet base BSDF"
+    bl_description = "Adds an iridescent thin film layer over a microfacet base BSDF."
 
     category = 'PBR'
 
@@ -206,7 +206,7 @@ class MxNode_PBR_uniform_edf(MxNode):
 
     bl_label = 'Uniform edf'
     bl_idname = 'usdhydra.MxNode_PBR_uniform_edf'
-    bl_description = "An EDF node for uniform emission"
+    bl_description = "An EDF node for uniform emission."
 
     category = 'PBR'
 
@@ -222,7 +222,7 @@ class MxNode_PBR_conical_edf(MxNode):
 
     bl_label = 'Conical edf'
     bl_idname = 'usdhydra.MxNode_PBR_conical_edf'
-    bl_description = "Constructs an EDF emitting light inside a cone around the normal direction"
+    bl_description = "Constructs an EDF emitting light inside a cone around the normal direction."
 
     category = 'PBR'
 
@@ -241,7 +241,7 @@ class MxNode_PBR_measured_edf(MxNode):
 
     bl_label = 'Measured edf'
     bl_idname = 'usdhydra.MxNode_PBR_measured_edf'
-    bl_description = "Constructs an EDF emitting light according to a measured IES light profile"
+    bl_description = "Constructs an EDF emitting light according to a measured IES light profile."
 
     category = 'PBR'
 
@@ -259,7 +259,7 @@ class MxNode_PBR_absorption_vdf(MxNode):
 
     bl_label = 'Absorption vdf'
     bl_idname = 'usdhydra.MxNode_PBR_absorption_vdf'
-    bl_description = "Constructs a VDF for pure light absorption"
+    bl_description = "Constructs a VDF for pure light absorption."
 
     category = 'PBR'
 
@@ -275,7 +275,7 @@ class MxNode_PBR_anisotropic_vdf(MxNode):
 
     bl_label = 'Anisotropic vdf'
     bl_idname = 'usdhydra.MxNode_PBR_anisotropic_vdf'
-    bl_description = "Constructs a VDF scattering light for a participating medium, based on the Henyey-Greenstein phase function"
+    bl_description = "Constructs a VDF scattering light for a participating medium, based on the Henyey-Greenstein phase function."
 
     category = 'PBR'
 
@@ -293,14 +293,14 @@ class MxNode_PBR_surface(MxNode):
 
     bl_label = 'Surface'
     bl_idname = 'usdhydra.MxNode_PBR_surface'
-    bl_description = "A constructor node for the surfaceshader type"
+    bl_description = "A constructor node for the surfaceshader type."
 
     category = 'PBR'
 
     data_type: EnumProperty(name="Type", description="Input Data Type", items=[('surfaceshader', 'Surfaceshader', 'Surfaceshader')], default='surfaceshader', update=MxNode.update_data_type)
 
-    nd_surfaceshader_in_bsdf: StringProperty(name="Bsdf", description="Distribution function for surface scattering", default="", update=MxNode.update_prop)
-    nd_surfaceshader_in_edf: StringProperty(name="Edf", description="Distribution function for surface emission", default="", update=MxNode.update_prop)
+    nd_surfaceshader_in_bsdf: StringProperty(name="Bsdf", description="Distribution function for surface scattering.", default="", update=MxNode.update_prop)
+    nd_surfaceshader_in_edf: StringProperty(name="Edf", description="Distribution function for surface emission.", default="", update=MxNode.update_prop)
     nd_surfaceshader_in_opacity: FloatProperty(name="Opacity", description="Surface cutout opacity", default=1.0, update=MxNode.update_prop)
     nd_surfaceshader_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
@@ -311,16 +311,16 @@ class MxNode_PBR_thin_surface(MxNode):
 
     bl_label = 'Thin surface'
     bl_idname = 'usdhydra.MxNode_PBR_thin_surface'
-    bl_description = "A constructor node for the surfaceshader type for non-closed 'thin' objects"
+    bl_description = "A constructor node for the surfaceshader type for non-closed 'thin' objects."
 
     category = 'PBR'
 
     data_type: EnumProperty(name="Type", description="Input Data Type", items=[('surfaceshader', 'Surfaceshader', 'Surfaceshader')], default='surfaceshader', update=MxNode.update_data_type)
 
-    nd_surfaceshader_in_front_bsdf: StringProperty(name="Front bsdf", description="Distribution function for front-side surface scattering", default="", update=MxNode.update_prop)
-    nd_surfaceshader_in_front_edf: StringProperty(name="Front edf", description="Distribution function for front-side surface emission", default="", update=MxNode.update_prop)
-    nd_surfaceshader_in_back_bsdf: StringProperty(name="Back bsdf", description="Distribution function for back-side surface scattering", default="", update=MxNode.update_prop)
-    nd_surfaceshader_in_back_edf: StringProperty(name="Back edf", description="Distribution function for back-side surface emission", default="", update=MxNode.update_prop)
+    nd_surfaceshader_in_front_bsdf: StringProperty(name="Front bsdf", description="Distribution function for front-side surface scattering.", default="", update=MxNode.update_prop)
+    nd_surfaceshader_in_front_edf: StringProperty(name="Front edf", description="Distribution function for front-side surface emission.", default="", update=MxNode.update_prop)
+    nd_surfaceshader_in_back_bsdf: StringProperty(name="Back bsdf", description="Distribution function for back-side surface scattering.", default="", update=MxNode.update_prop)
+    nd_surfaceshader_in_back_edf: StringProperty(name="Back edf", description="Distribution function for back-side surface emission.", default="", update=MxNode.update_prop)
     nd_surfaceshader_in_opacity: FloatProperty(name="Opacity", description="Surface cutout opacity", default=1.0, update=MxNode.update_prop)
     nd_surfaceshader_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
@@ -331,14 +331,14 @@ class MxNode_PBR_volume(MxNode):
 
     bl_label = 'Volume'
     bl_idname = 'usdhydra.MxNode_PBR_volume'
-    bl_description = "A constructor node for the volumeshader type"
+    bl_description = "A constructor node for the volumeshader type."
 
     category = 'PBR'
 
     data_type: EnumProperty(name="Type", description="Input Data Type", items=[('volumeshader', 'Volumeshader', 'Volumeshader')], default='volumeshader', update=MxNode.update_data_type)
 
-    nd_volumeshader_in_vdf: StringProperty(name="Vdf", description="Volume distribution function for the medium", default="", update=MxNode.update_prop)
-    nd_volumeshader_in_edf: StringProperty(name="Edf", description="Emission distribution function for the medium", default="", update=MxNode.update_prop)
+    nd_volumeshader_in_vdf: StringProperty(name="Vdf", description="Volume distribution function for the medium.", default="", update=MxNode.update_prop)
+    nd_volumeshader_in_edf: StringProperty(name="Edf", description="Emission distribution function for the medium.", default="", update=MxNode.update_prop)
     nd_volumeshader_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
 
@@ -348,13 +348,13 @@ class MxNode_PBR_light(MxNode):
 
     bl_label = 'Light'
     bl_idname = 'usdhydra.MxNode_PBR_light'
-    bl_description = "A constructor node for the lightshader type"
+    bl_description = "A constructor node for the lightshader type."
 
     category = 'PBR'
 
     data_type: EnumProperty(name="Type", description="Input Data Type", items=[('lightshader', 'Lightshader', 'Lightshader')], default='lightshader', update=MxNode.update_data_type)
 
-    nd_lightshader_in_edf: StringProperty(name="Edf", description="Distribution function for light emission", default="", update=MxNode.update_prop)
+    nd_lightshader_in_edf: StringProperty(name="Edf", description="Distribution function for light emission.", default="", update=MxNode.update_prop)
     nd_lightshader_in_intensity: FloatProperty(name="Intensity", description="Multiplier for the light intensity", default=1.0, update=MxNode.update_prop)
     nd_lightshader_in_exposure: FloatProperty(name="Exposure", description="Exposure control for the light intensity", default=0.0, update=MxNode.update_prop)
     nd_lightshader_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
@@ -366,36 +366,40 @@ class MxNode_PBR_displacement(MxNode):
 
     bl_label = 'Displacement'
     bl_idname = 'usdhydra.MxNode_PBR_displacement'
-    bl_description = "A constructor node for the displacementshader type"
+    bl_description = "A constructor node for the displacementshader type."
 
     category = 'PBR'
 
     data_type: EnumProperty(name="Type", description="Input Data Type", items=[('float', 'Float', 'Float'), ('vector3', 'Vector3', 'Vector3')], default='float', update=MxNode.update_data_type)
 
-    nd_float_in_displacement: FloatProperty(name="Displacement", description="Scalar displacement amount along the surface normal direction", default=0.0, update=MxNode.update_prop)
+    nd_float_in_displacement: FloatProperty(name="Displacement", description="Scalar displacement amount along the surface normal direction.", default=0.0, update=MxNode.update_prop)
     nd_float_in_scale: FloatProperty(name="Scale", description="Scale factor for the displacement vector", default=1.0, update=MxNode.update_prop)
     nd_float_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
-    nd_vector3_in_displacement: FloatVectorProperty(name="Displacement", description="Vector displacement in (dPdu, dPdv, N) tangent/normal space", subtype="XYZ", size=3, default=(0.0, 0.0, 0.0), update=MxNode.update_prop)
+    nd_vector3_in_displacement: FloatVectorProperty(name="Displacement", description="Vector displacement in (dPdu, dPdv, N) tangent/normal space.", subtype="XYZ", size=3, default=(0.0, 0.0, 0.0), update=MxNode.update_prop)
     nd_vector3_in_scale: FloatProperty(name="Scale", description="Scale factor for the displacement vector", default=1.0, update=MxNode.update_prop)
     nd_vector3_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
 
 class MxNode_PBR_layer(MxNode):
     _file_path = FILE_PATH
-    _data_types = {'bsdf': {'nd_name': 'ND_layer_bsdf', 'nd': None}}
+    _data_types = {'bsdf': {'nd_name': 'ND_layer_bsdf', 'nd': None}, 'vdf': {'nd_name': 'ND_layer_vdf', 'nd': None}}
 
     bl_label = 'Layer'
     bl_idname = 'usdhydra.MxNode_PBR_layer'
-    bl_description = "Layer two BSDF's with vertical layering"
+    bl_description = "Layer two BSDF's with vertical layering."
 
     category = 'PBR'
 
-    data_type: EnumProperty(name="Type", description="Input Data Type", items=[('bsdf', 'Bsdf', 'Bsdf')], default='bsdf', update=MxNode.update_data_type)
+    data_type: EnumProperty(name="Type", description="Input Data Type", items=[('bsdf', 'Bsdf', 'Bsdf'), ('vdf', 'Vdf', 'Vdf')], default='bsdf', update=MxNode.update_data_type)
 
     nd_bsdf_in_top: StringProperty(name="Top", description="", default="", update=MxNode.update_prop)
     nd_bsdf_in_base: StringProperty(name="Base", description="", default="", update=MxNode.update_prop)
     nd_bsdf_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
+
+    nd_vdf_in_top: StringProperty(name="Top", description="", default="", update=MxNode.update_prop)
+    nd_vdf_in_base: StringProperty(name="Base", description="", default="", update=MxNode.update_prop)
+    nd_vdf_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
 
 class MxNode_PBR_mix(MxNode):
@@ -404,7 +408,7 @@ class MxNode_PBR_mix(MxNode):
 
     bl_label = 'Mix'
     bl_idname = 'usdhydra.MxNode_PBR_mix'
-    bl_description = "Mix two BSDF's according to an input mix amount"
+    bl_description = "Mix two BSDF's according to an input mix amount."
 
     category = 'PBR'
 
@@ -412,17 +416,17 @@ class MxNode_PBR_mix(MxNode):
 
     nd_bsdf_in_fg: StringProperty(name="Fg", description="", default="", update=MxNode.update_prop)
     nd_bsdf_in_bg: StringProperty(name="Bg", description="", default="", update=MxNode.update_prop)
-    nd_bsdf_in_mix: FloatProperty(name="Mix", description="Mixing weight, range [0, 1]", min=0.0, max=1.0, default=1.0, update=MxNode.update_prop)
+    nd_bsdf_in_mix: FloatProperty(name="Mix", description="Mixing weight, range [0, 1].", min=0.0, max=1.0, default=0.0, update=MxNode.update_prop)
     nd_bsdf_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
     nd_edf_in_fg: StringProperty(name="Fg", description="", default="", update=MxNode.update_prop)
     nd_edf_in_bg: StringProperty(name="Bg", description="", default="", update=MxNode.update_prop)
-    nd_edf_in_mix: FloatProperty(name="Mix", description="Mixing weight, range [0, 1]", min=0.0, max=1.0, default=1.0, update=MxNode.update_prop)
+    nd_edf_in_mix: FloatProperty(name="Mix", description="Mixing weight, range [0, 1].", min=0.0, max=1.0, default=0.0, update=MxNode.update_prop)
     nd_edf_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
     nd_vdf_in_fg: StringProperty(name="Fg", description="", default="", update=MxNode.update_prop)
     nd_vdf_in_bg: StringProperty(name="Bg", description="", default="", update=MxNode.update_prop)
-    nd_vdf_in_mix: FloatProperty(name="Mix", description="Mixing weight, range [0, 1]", min=0.0, max=1.0, default=1.0, update=MxNode.update_prop)
+    nd_vdf_in_mix: FloatProperty(name="Mix", description="Mixing weight, range [0, 1].", min=0.0, max=1.0, default=0.0, update=MxNode.update_prop)
     nd_vdf_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
 
@@ -432,22 +436,22 @@ class MxNode_PBR_add(MxNode):
 
     bl_label = 'Add'
     bl_idname = 'usdhydra.MxNode_PBR_add'
-    bl_description = "A node for additive blending of BSDF's"
+    bl_description = "A node for additive blending of BSDF's."
 
     category = 'PBR'
 
     data_type: EnumProperty(name="Type", description="Input Data Type", items=[('bsdf', 'Bsdf', 'Bsdf'), ('edf', 'Edf', 'Edf'), ('vdf', 'Vdf', 'Vdf')], default='bsdf', update=MxNode.update_data_type)
 
-    nd_bsdf_in_in1: StringProperty(name="In1", description="First BSDF", default="", update=MxNode.update_prop)
-    nd_bsdf_in_in2: StringProperty(name="In2", description="Second BSDF", default="", update=MxNode.update_prop)
+    nd_bsdf_in_in1: StringProperty(name="In1", description="First BSDF.", default="", update=MxNode.update_prop)
+    nd_bsdf_in_in2: StringProperty(name="In2", description="Second BSDF.", default="", update=MxNode.update_prop)
     nd_bsdf_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
-    nd_edf_in_in1: StringProperty(name="In1", description="First EDF", default="", update=MxNode.update_prop)
-    nd_edf_in_in2: StringProperty(name="In2", description="Second EDF", default="", update=MxNode.update_prop)
+    nd_edf_in_in1: StringProperty(name="In1", description="First EDF.", default="", update=MxNode.update_prop)
+    nd_edf_in_in2: StringProperty(name="In2", description="Second EDF.", default="", update=MxNode.update_prop)
     nd_edf_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
-    nd_vdf_in_in1: StringProperty(name="In1", description="First VDF", default="", update=MxNode.update_prop)
-    nd_vdf_in_in2: StringProperty(name="In2", description="Second VDF", default="", update=MxNode.update_prop)
+    nd_vdf_in_in1: StringProperty(name="In1", description="First VDF.", default="", update=MxNode.update_prop)
+    nd_vdf_in_in2: StringProperty(name="In2", description="Second VDF.", default="", update=MxNode.update_prop)
     nd_vdf_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
 
@@ -457,34 +461,34 @@ class MxNode_PBR_multiply(MxNode):
 
     bl_label = 'Multiply'
     bl_idname = 'usdhydra.MxNode_PBR_multiply'
-    bl_description = "A node for adjusting the contribution of a BSDF with a weight"
+    bl_description = "A node for adjusting the contribution of a BSDF with a weight."
 
     category = 'PBR'
 
     data_type: EnumProperty(name="Type", description="Input Data Type", items=[('bsdfC', 'BsdfC', 'BsdfC'), ('bsdfF', 'BsdfF', 'BsdfF'), ('edfC', 'EdfC', 'EdfC'), ('edfF', 'EdfF', 'EdfF'), ('vdfC', 'VdfC', 'VdfC'), ('vdfF', 'VdfF', 'VdfF')], default='bsdfC', update=MxNode.update_data_type)
 
-    nd_bsdfC_in_in1: StringProperty(name="In1", description="The BSDF to scale", default="", update=MxNode.update_prop)
-    nd_bsdfC_in_in2: FloatVectorProperty(name="In2", description="Scaling weight", subtype="COLOR", size=3, soft_min=0.0, soft_max=1.0, default=(1.0, 1.0, 1.0), update=MxNode.update_prop)
+    nd_bsdfC_in_in1: StringProperty(name="In1", description="The BSDF to scale.", default="", update=MxNode.update_prop)
+    nd_bsdfC_in_in2: FloatVectorProperty(name="In2", description="Scaling weight.", subtype="COLOR", size=3, soft_min=0.0, soft_max=1.0, default=(1.0, 1.0, 1.0), update=MxNode.update_prop)
     nd_bsdfC_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
-    nd_bsdfF_in_in1: StringProperty(name="In1", description="The BSDF to scale", default="", update=MxNode.update_prop)
-    nd_bsdfF_in_in2: FloatProperty(name="In2", description="Scaling weight", default=1.0, update=MxNode.update_prop)
+    nd_bsdfF_in_in1: StringProperty(name="In1", description="The BSDF to scale.", default="", update=MxNode.update_prop)
+    nd_bsdfF_in_in2: FloatProperty(name="In2", description="Scaling weight.", default=1.0, update=MxNode.update_prop)
     nd_bsdfF_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
-    nd_edfC_in_in1: StringProperty(name="In1", description="The EDF to scale", default="", update=MxNode.update_prop)
-    nd_edfC_in_in2: FloatVectorProperty(name="In2", description="Scaling weight", subtype="COLOR", size=3, soft_min=0.0, soft_max=1.0, default=(1.0, 1.0, 1.0), update=MxNode.update_prop)
+    nd_edfC_in_in1: StringProperty(name="In1", description="The EDF to scale.", default="", update=MxNode.update_prop)
+    nd_edfC_in_in2: FloatVectorProperty(name="In2", description="Scaling weight.", subtype="COLOR", size=3, soft_min=0.0, soft_max=1.0, default=(1.0, 1.0, 1.0), update=MxNode.update_prop)
     nd_edfC_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
-    nd_edfF_in_in1: StringProperty(name="In1", description="The EDF to scale", default="", update=MxNode.update_prop)
-    nd_edfF_in_in2: FloatProperty(name="In2", description="Scaling weight", default=1.0, update=MxNode.update_prop)
+    nd_edfF_in_in1: StringProperty(name="In1", description="The EDF to scale.", default="", update=MxNode.update_prop)
+    nd_edfF_in_in2: FloatProperty(name="In2", description="Scaling weight.", default=1.0, update=MxNode.update_prop)
     nd_edfF_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
-    nd_vdfC_in_in1: StringProperty(name="In1", description="The VDF to scale", default="", update=MxNode.update_prop)
-    nd_vdfC_in_in2: FloatVectorProperty(name="In2", description="Scaling weight", subtype="COLOR", size=3, soft_min=0.0, soft_max=1.0, default=(1.0, 1.0, 1.0), update=MxNode.update_prop)
+    nd_vdfC_in_in1: StringProperty(name="In1", description="The VDF to scale.", default="", update=MxNode.update_prop)
+    nd_vdfC_in_in2: FloatVectorProperty(name="In2", description="Scaling weight.", subtype="COLOR", size=3, soft_min=0.0, soft_max=1.0, default=(1.0, 1.0, 1.0), update=MxNode.update_prop)
     nd_vdfC_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
-    nd_vdfF_in_in1: StringProperty(name="In1", description="The VDF to scale", default="", update=MxNode.update_prop)
-    nd_vdfF_in_in2: FloatProperty(name="In2", description="Scaling weight", default=1.0, update=MxNode.update_prop)
+    nd_vdfF_in_in1: StringProperty(name="In1", description="The VDF to scale.", default="", update=MxNode.update_prop)
+    nd_vdfF_in_in2: FloatProperty(name="In2", description="Scaling weight.", default=1.0, update=MxNode.update_prop)
     nd_vdfF_out_out: StringProperty(name="Out", description="", update=MxNode.update_prop)
 
 
@@ -494,7 +498,7 @@ class MxNode_PBR_roughness_anisotropy(MxNode):
 
     bl_label = 'Roughness anisotropy'
     bl_idname = 'usdhydra.MxNode_PBR_roughness_anisotropy'
-    bl_description = "Calculates anisotropic surface roughness from a scalar roughness/anisotropy parameterization"
+    bl_description = "Calculates anisotropic surface roughness from a scalar roughness/anisotropy parameterization."
 
     category = 'PBR'
 
@@ -511,7 +515,7 @@ class MxNode_PBR_roughness_dual(MxNode):
 
     bl_label = 'Roughness dual'
     bl_idname = 'usdhydra.MxNode_PBR_roughness_dual'
-    bl_description = "Calculates anisotropic surface roughness from a dual surface roughness parameterization"
+    bl_description = "Calculates anisotropic surface roughness from a dual surface roughness parameterization."
 
     category = 'PBR'
 
@@ -527,7 +531,7 @@ class MxNode_PBR_glossiness_anisotropy(MxNode):
 
     bl_label = 'Glossiness anisotropy'
     bl_idname = 'usdhydra.MxNode_PBR_glossiness_anisotropy'
-    bl_description = "Calculates anisotropic surface roughness from a scalar glossiness/anisotropy parameterization"
+    bl_description = "Calculates anisotropic surface roughness from a scalar glossiness/anisotropy parameterization."
 
     category = 'PBR'
 
@@ -540,18 +544,18 @@ class MxNode_PBR_glossiness_anisotropy(MxNode):
 
 class MxNode_PBR_blackbody(MxNode):
     _file_path = FILE_PATH
-    _data_types = {'float': {'nd_name': 'ND_blackbody', 'nd': None}}
+    _data_types = {'color3': {'nd_name': 'ND_blackbody', 'nd': None}}
 
     bl_label = 'Blackbody'
     bl_idname = 'usdhydra.MxNode_PBR_blackbody'
-    bl_description = "Returns the radiant emittance of a blackbody radiator with the given temperature"
+    bl_description = "Returns the radiant emittance of a blackbody radiator with the given temperature."
 
     category = 'PBR'
 
-    data_type: EnumProperty(name="Type", description="Input Data Type", items=[('float', 'Float', 'Float')], default='float', update=MxNode.update_data_type)
+    data_type: EnumProperty(name="Type", description="Input Data Type", items=[('color3', 'Color3', 'Color3')], default='color3', update=MxNode.update_data_type)
 
-    nd_float_in_temperature: FloatProperty(name="Temperature", description="", default=5000.0, update=MxNode.update_prop)
-    nd_float_out_out: FloatProperty(name="Out", description="", update=MxNode.update_prop)
+    nd_color3_in_temperature: FloatProperty(name="Temperature", description="", default=5000.0, update=MxNode.update_prop)
+    nd_color3_out_out: FloatVectorProperty(name="Out", description="", subtype="COLOR", size=3, soft_min=0.0, soft_max=1.0, update=MxNode.update_prop)
 
 
 class MxNode_PBR_artistic_ior(MxNode):
@@ -560,7 +564,7 @@ class MxNode_PBR_artistic_ior(MxNode):
 
     bl_label = 'Artistic ior'
     bl_idname = 'usdhydra.MxNode_PBR_artistic_ior'
-    bl_description = "Converts the artistic parameterization reflectivity and edge_color to  complex IOR values"
+    bl_description = "Converts the artistic parameterization reflectivity and edge_color to  complex IOR values."
 
     category = 'PBR'
 

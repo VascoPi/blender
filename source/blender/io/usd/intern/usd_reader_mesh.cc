@@ -33,6 +33,7 @@
 #include <pxr/base/vt/value.h>
 #include <pxr/usd/sdf/types.h>
 #include <pxr/usd/usdGeom/mesh.h>
+#include <pxr/usd/usdGeom/primvarsApi.h>
 #include <pxr/usd/usdGeom/subset.h>
 #include <pxr/usd/usdShade/materialBindingAPI.h>
 
@@ -295,7 +296,7 @@ bool USDMeshReader::topology_changed(const Mesh *existing_mesh, const double mot
    * as this is not required to determine if the topology has changed. */
 
   /* If 'normals' and 'primvars:normals' are both specified, the latter has precedence. */
-  pxr::UsdGeomPrimvar primvar = mesh_prim_.GetPrimvar(usdtokens::normalsPrimvar);
+  pxr::UsdGeomPrimvar primvar = pxr::UsdGeomPrimvarsAPI(mesh_prim_).GetPrimvar(usdtokens::normalsPrimvar);
   if (primvar.HasValue()) {
     primvar.ComputeFlattened(&normals_, motionSampleTime);
     normal_interpolation_ = primvar.GetInterpolation();
@@ -389,11 +390,11 @@ void USDMeshReader::read_uvs(Mesh *mesh, const double motionSampleTime, const bo
       }
 
       /* Early out if mesh doesn't have primvar. */
-      if (!mesh_prim_.HasPrimvar(uv_token)) {
+      if (!pxr::UsdGeomPrimvarsAPI(mesh_prim_).HasPrimvar(uv_token)) {
         continue;
       }
 
-      if (pxr::UsdGeomPrimvar uv_primvar = mesh_prim_.GetPrimvar(uv_token)) {
+      if (pxr::UsdGeomPrimvar uv_primvar = pxr::UsdGeomPrimvarsAPI(mesh_prim_).GetPrimvar(uv_token)) {
         uv_primvar.ComputeFlattened(&uv_primvars[layer_idx].uvs, motionSampleTime);
         uv_primvars[layer_idx].interpolation = uv_primvar.GetInterpolation();
       }
@@ -844,7 +845,7 @@ Mesh *USDMeshReader::read_mesh(Mesh *existing_mesh,
   /* Currently we only handle UV primvars. */
   if (read_flag & MOD_MESHSEQ_READ_UV) {
 
-    std::vector<pxr::UsdGeomPrimvar> primvars = mesh_prim_.GetPrimvars();
+    std::vector<pxr::UsdGeomPrimvar> primvars = pxr::UsdGeomPrimvarsAPI(mesh_prim_).GetPrimvars();
 
     for (pxr::UsdGeomPrimvar p : primvars) {
 
