@@ -86,5 +86,6 @@ protected:
 };
 
 PyObject *addPythonSubmodule_session(PyObject *mod);
+void get_settingsmap(PyObject *delegate_settings);
 
 }   // namespace usdhydra

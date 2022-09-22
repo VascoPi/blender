@@ -111,7 +111,6 @@ set(ADDON_USD_NODES_NODES_FILES
 set(ADDON_PROPERTIES_FILES
   addon/properties/__init__.py
   addon/properties/scene.py
-  addon/properties/hdrpr_render.py
   addon/properties/material.py
   addon/properties/object.py
   addon/properties/usd_stage.py
@@ -122,7 +121,6 @@ set(ADDON_PROPERTIES_FILES
 set(ADDON_UI_FILES
   addon/ui/__init__.py
   addon/ui/render.py
-  addon/ui/hdrpr_render.py
   addon/ui/object.py
   addon/ui/world.py
   addon/ui/material.py

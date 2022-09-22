@@ -72,7 +72,7 @@ def get_panels():
 def register():
     # set USDHydra panels filter
     for panel in get_panels():
-        panel.COMPAT_ENGINES.add('USDHydra')
+        panel.COMPAT_ENGINES.add('USDHydraHdStormRendererPlugin')
 
     # set update for material ui according to MaterialX nodetree header changes
     #bpy.types.NODE_HT_header.append(update_material_ui)
@@ -82,7 +82,7 @@ def unregister():
     # remove USDHydra panels filter
     for panel in get_panels():
         if 'USDHydra' in panel.COMPAT_ENGINES:
-            panel.COMPAT_ENGINES.remove('USDHydra')
+            panel.COMPAT_ENGINES.remove('USDHydraHdStormRendererPlugin')
 
     # remove update for material ui according to MaterialX nodetree header changes
     #bpy.types.NODE_HT_header.remove(update_material_ui)

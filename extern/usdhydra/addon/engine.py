@@ -12,23 +12,23 @@ import _usdhydra
 import MaterialX as mx
 
 from .usd_nodes import node_tree
-from .utils import stages
+from .utils import stages, logging
+log = logging.Log('engine')
 
-
-def init():
-    # # internal scene index representation in hydra,
-    # # see https://github.com/PixarAnimationStudios/USD/blob/release/CHANGELOG.md#imaging
-    # os.environ["HD_ENABLE_SCENE_INDEX_EMULATION"] = "0"
-    from .properties.preferences import get_addon_pref
-    delegates_dir = Path(get_addon_pref().delegates_dir)
-
-    sys.path.append(str(delegates_dir / 'lib' / 'python'))
-
-    paths = os.environ['PATH'].split(os.pathsep)
-    paths.append(str(delegates_dir / 'lib'))
-    os.environ["PATH"] += os.pathsep + os.pathsep.join(set(paths))
-
-    _usdhydra.init(str(delegates_dir / 'plugin'))
+# def init():
+#     # # internal scene index representation in hydra,
+#     # # see https://github.com/PixarAnimationStudios/USD/blob/release/CHANGELOG.md#imaging
+#     # os.environ["HD_ENABLE_SCENE_INDEX_EMULATION"] = "0"
+#     from .properties.preferences import get_addon_pref
+#     delegates_dir = Path(get_addon_pref().delegates_dir)
+#
+#     sys.path.append(str(delegates_dir / 'lib' / 'python'))
+#
+#     paths = os.environ['PATH'].split(os.pathsep)
+#     paths.append(str(delegates_dir / 'lib'))
+#     os.environ["PATH"] += os.pathsep + os.pathsep.join(set(paths))
+#
+#     _usdhydra.init(str(delegates_dir / 'plugin'))
 
 
 def exit():
@@ -46,6 +46,7 @@ class USDHydraEngine(bpy.types.RenderEngine):
     bl_use_gpu_context = True
 
     session = None
+    delegate_name = "HdStormRendererPlugin"
 
     def __init__(self):
         self.session = None
@@ -77,19 +78,22 @@ class USDHydraEngine(bpy.types.RenderEngine):
         if not self.session:
             self.session = session_create(self)
 
-        self.bl_use_gpu_context = depsgraph.scene.usdhydra.final.is_gl_delegate
+        self.bl_use_gpu_context = self.delegate_name == "HdRprPlugin"
 
         materialx_data = self.get_materialx_data(data, depsgraph)
 
         session_reset(self.session, data, bpy.context, depsgraph, materialx_data, is_blender_scene,
-                      stage, depsgraph.scene.usdhydra.final.delegate, self.is_preview)
+                      stage, self.delegate_name, self.is_preview)
         session_final_update(self.session, depsgraph)
 
     def render(self, depsgraph):
         if not self.session:
             return
 
-        session_render(self.session, depsgraph)
+        delegate_settings = self.sync_final_delegate_settings()
+        log.warn(delegate_settings)
+
+        session_render(self.session, depsgraph, self.delegate_name, delegate_settings)
 
     def render_frame_finish(self):
         pass
@@ -116,11 +120,13 @@ class USDHydraEngine(bpy.types.RenderEngine):
         if not self.session:
             self.session = session_create(self)
 
+        delegate_settings = self.sync_viewport_delegate_settings()
+        log.warn(delegate_settings)
         materialx_data = self.get_materialx_data(context, depsgraph)
 
         session_reset(self.session, data, context, depsgraph, materialx_data, is_blender_scene,
-                      stage, depsgraph.scene.usdhydra.viewport.delegate, self.is_preview)
-        session_view_update(self.session, depsgraph, context, context.space_data, context.region_data)
+                      stage, self.delegate_name, self.is_preview)
+        session_view_update(self.session, depsgraph, context, context.space_data, context.region_data, self.delegate_name, delegate_settings)
 
     def view_draw(self, context, depsgraph):
         if not self.session:
@@ -128,6 +134,11 @@ class USDHydraEngine(bpy.types.RenderEngine):
 
         session_view_draw(self.session, depsgraph, context, context.space_data, context.region_data)
 
+    def sync_final_delegate_settings(self):
+        return dict()
+
+    def sync_viewport_delegate_settings(self):
+        return dict()
 
     def get_materialx_data(self, context, depsgraph):
         data = []
@@ -158,6 +169,19 @@ class USDHydraEngine(bpy.types.RenderEngine):
         return tuple(data)
 
 
+class USDHydraHdStormEngine(USDHydraEngine):
+    bl_idname = 'USDHydraHdStormRendererPlugin'
+    bl_label = "USD Hydra: GL"
+    bl_info = "USD Hydra HdStormRendererPlugin rendering plugin"
+
+    bl_use_preview = True
+    bl_use_shading_nodes = True
+    bl_use_shading_nodes_custom = False
+    bl_use_gpu_context = True
+
+    delegate_name = "HdStormRendererPlugin"
+
+
 def session_create(engine: USDHydraEngine):
     return _usdhydra.session.create(engine.as_pointer())
 
@@ -171,8 +195,8 @@ def session_reset(session, data, context, depsgraph, materialx_data, is_blender_
                             materialx_data, is_blender_scene, stage, delegate, is_preview)
 
 
-def session_render(session, depsgraph):
-    _usdhydra.session.render(session, depsgraph.as_pointer(), depsgraph.scene.usdhydra.final.delegate)
+def session_render(session, depsgraph, delegate, delegate_settings):
+    _usdhydra.session.render(session, depsgraph.as_pointer(), delegate, delegate_settings)
 
 
 def session_final_update(session, depsgraph):
@@ -184,10 +208,10 @@ def session_view_draw(session, depsgraph, context, space_data, region_data):
                                 space_data.as_pointer(), region_data.as_pointer())
 
 
-def session_view_update(session, depsgraph, context, space_data, region_data):
+def session_view_update(session, depsgraph, context, space_data, region_data, delegate, delegate_settings):
     _usdhydra.session.view_update(session, depsgraph.as_pointer(), context.as_pointer(),
                                   space_data.as_pointer(), region_data.as_pointer(),
-                                  depsgraph.scene.usdhydra.viewport.delegate)
+                                  delegate, delegate_settings)
 
 
 def session_get_render_plugins():

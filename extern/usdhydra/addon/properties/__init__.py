@@ -29,18 +29,9 @@ from . import (
     usd_stage,
     material,
     window_manager,
-    hdrpr_render,
 )
 register_classes, unregister_classes = bpy.utils.register_classes_factory((
-    preferences.USDHYDRA_ADDON_OP_after_install_delegate_notifier,
-    preferences.USDHYDRA_ADDON_OP_install_delegate,
     preferences.USDHYDRA_ADDON_PT_preferences,
-
-    hdrpr_render.QualitySettings,
-    hdrpr_render.InteractiveQualitySettings,
-    hdrpr_render.ContourSettings,
-    hdrpr_render.DenoiseSettings,
-    hdrpr_render.RenderSettings,
 
     scene.FinalRenderSettings,
     scene.ViewportRenderSettings,

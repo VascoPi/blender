@@ -25,21 +25,34 @@ namespace usdhydra {
 
 static PyObject *init_func(PyObject * /*self*/, PyObject *args)
 {
+  LOG(INFO) << "init_func";
+
+  // TODO: add PXR_MTLX_PLUGIN_SEARCH_PATHS if there are custom mtlx files
+  string MatX_libs_folder = BKE_appdir_folder_id(BLENDER_DATAFILES, "MaterialX");
+  string MatX_libs_env_var = "PXR_MTLX_STDLIB_SEARCH_PATHS=" + MatX_libs_folder + "/libraries;";
+  putenv(MatX_libs_env_var.c_str());
+
+  pxr::PlugRegistry &registry = pxr::PlugRegistry::GetInstance();
+  vector<string> paths;
+  paths.push_back(BKE_appdir_folder_id(BLENDER_DATAFILES, "usd"));
+  registry.RegisterPlugins(paths);
+
+  stage_init();
+
+  Py_RETURN_NONE;
+}
+
+static PyObject *init_delegate_func(PyObject * /*self*/, PyObject *args)
+{
   static string defaultPath = getenv("PATH");
 
   char *delegates_dir;
   if (!PyArg_ParseTuple(args, "s", &delegates_dir)) {
     Py_RETURN_NONE;
   }
-  
+
   string delegates_dir_str(delegates_dir);
 
-  LOG(INFO) << "init_func(" << delegates_dir_str << ")";
-
-  // TODO: add PXR_MTLX_PLUGIN_SEARCH_PATHS if there are custom mtlx files
-  string MatX_libs_folder = BKE_appdir_folder_id(BLENDER_DATAFILES, "MaterialX");
-  string MatX_libs_env_var = "PXR_MTLX_STDLIB_SEARCH_PATHS=" + MatX_libs_folder + "/libraries;";
-  putenv(MatX_libs_env_var.c_str());
 
   string env("PATH=");
   env += delegates_dir_str + "/lib;";
@@ -48,14 +61,14 @@ static PyObject *init_func(PyObject * /*self*/, PyObject *args)
 
   pxr::PlugRegistry &registry = pxr::PlugRegistry::GetInstance();
   vector<string> paths;
-  paths.push_back(BKE_appdir_folder_id(BLENDER_DATAFILES, "usd"));
   paths.push_back(delegates_dir_str + "/plugin");
   registry.RegisterPlugins(paths);
 
-  stage_init();
+    LOG(INFO) << "init_delegate_func(" << delegates_dir_str << ")";
 
   Py_RETURN_NONE;
 }
+
 
 static PyObject *exit_func(PyObject * /*self*/, PyObject * /*args*/)
 {
@@ -66,6 +79,7 @@ static PyObject *exit_func(PyObject * /*self*/, PyObject * /*args*/)
 
 static PyMethodDef methods[] = {
   {"init", init_func, METH_VARARGS, ""},
+  {"init_delegate", init_delegate_func, METH_VARARGS, ""},
   {"exit", exit_func, METH_VARARGS, ""},
   {NULL, NULL, 0, NULL},
 };

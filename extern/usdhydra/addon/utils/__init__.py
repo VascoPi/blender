@@ -38,3 +38,41 @@ def update_ui(area_type='PROPERTIES', region_type='WINDOW'):
                 for region in area.regions:
                     if region.type == region_type:
                         region.tag_redraw()
+
+
+def message_box(message="", title="", icon='INFO'):
+
+    def draw(self, context):
+        self.layout.label(text=message)
+
+    bpy.context.window_manager.popup_menu(draw, title=title, icon=icon)
+
+
+def register_delegate(delegate_dir, engine_bl_idname):
+    import _usdhydra
+    from ..ui import USDHydra_Panel, USDHydra_Operator
+    from ..mx_nodes.node_tree import MxNodeTree
+    from ..usd_nodes.node_tree import USDTree
+
+
+    _usdhydra.init_delegate(str(delegate_dir))
+    USDHydra_Panel.COMPAT_ENGINES.add(engine_bl_idname)
+    USDHydra_Operator.COMPAT_ENGINES.add(engine_bl_idname)
+    USDTree.COMPAT_ENGINES.add(engine_bl_idname)
+    MxNodeTree.COMPAT_ENGINES.add(engine_bl_idname)
+    #message_box(message="Please restart Blender to update available render delegates", title="USD Hydra Delegate Registration")
+
+
+def unregister_delegate(engine_bl_idname):
+    from ..ui import USDHydra_Panel, USDHydra_Operator
+    from ..mx_nodes.node_tree import MxNodeTree
+    from ..usd_nodes.node_tree import USDTree
+
+    try:
+        USDHydra_Panel.COMPAT_ENGINES.remove(engine_bl_idname)
+        USDHydra_Operator.COMPAT_ENGINES.remove(engine_bl_idname)
+        USDTree.COMPAT_ENGINES.remove(engine_bl_idname)
+        MxNodeTree.COMPAT_ENGINES.remove(engine_bl_idname)
+
+    except:
+        pass

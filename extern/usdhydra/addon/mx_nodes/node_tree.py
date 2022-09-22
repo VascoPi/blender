@@ -29,7 +29,7 @@ class MxNodeTree(bpy.types.ShaderNodeTree):
     bl_label = "MaterialX"
     bl_icon = "NODE_MATERIAL"
     bl_idname = "usdhydra.MxNodeTree"
-    COMPAT_ENGINES = {'USDHydra'}
+    COMPAT_ENGINES = {'USDHydraHdStormRendererPlugin'}
 
     _do_update = True
 

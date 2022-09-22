@@ -136,8 +136,6 @@ class RenderSettingsPanel(USDHydra_Panel):
         layout.use_property_split = True
         layout.use_property_decorate = False
 
-        layout.prop(settings, "delegate")
-
         split = layout.row(align=True).split(factor=0.4)
         col = split.column()
         col.alignment = 'RIGHT'

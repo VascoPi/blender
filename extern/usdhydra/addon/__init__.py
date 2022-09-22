@@ -61,7 +61,7 @@ def register():
     usd_nodes.register()
     handlers.register()
 
-    register_class(engine.USDHydraEngine)
+    register_class(engine.USDHydraHdStormEngine)
 
 
 def unregister():
@@ -71,4 +71,4 @@ def unregister():
     usd_nodes.unregister()
     handlers.unregister()
 
-    unregister_class(engine.USDHydraEngine)
+    unregister_class(engine.USDHydraHdStormEngine)

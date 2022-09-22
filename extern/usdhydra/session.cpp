@@ -452,6 +452,36 @@ void BlenderSession::notify_final_render_status(float progress, const char *titl
   b_engine.update_stats(title, info);
 }
 
+void get_settingsmap(PyObject *delegate_settings)
+{   
+    HdRenderSettingsMap settings_map;
+    PyObject *settings = PyDict_Items(delegate_settings);
+      if (settings != Py_None) {
+        PyObject *iter = PyObject_GetIter(settings);
+        
+        while (true) {
+            PyObject *next = PyIter_Next(iter);
+            const char *key;
+            PyObject *dirty_value;
+
+            if (!next) {
+                break;
+            }
+
+            if (!PyArg_ParseTuple(next, "sO", &key, &dirty_value)) {
+                continue;
+            }
+
+            
+            //Py_Initialize();
+            //pxr::VtValue value(dirty_value);
+
+            printf(key);
+        }
+      }
+
+}
+
 /* ------------------------------------------------------------------------- */
 /* Python API for BlenderSession
  */
@@ -573,10 +603,10 @@ static PyObject* final_update_func(PyObject* /*self*/, PyObject* args)
 static PyObject *render_func(PyObject * /*self*/, PyObject *args)
 {
   LOG(INFO) << "render_func";
-  PyObject *pysession, *pydepsgraph;
+  PyObject *pysession, *pydepsgraph, *delegate_settings;
   const char *render_delegate;
 
-  if (!PyArg_ParseTuple(args, "OOs", &pysession, &pydepsgraph, &render_delegate)) {
+  if (!PyArg_ParseTuple(args, "OOsO", &pysession, &pydepsgraph, &render_delegate, &delegate_settings)) {
     Py_RETURN_NONE;
   }
 
@@ -586,8 +616,9 @@ static PyObject *render_func(PyObject * /*self*/, PyObject *args)
 
   BlenderSession *session = (BlenderSession *)PyLong_AsVoidPtr(pysession);
 
-  if (strcmp(render_delegate, "HdStormRendererPlugin") == 0) {
-    session->render_gl(depsgraph, render_delegate);
+
+  if (strcmp(render_delegate, "HdRprPlugin") == 0) {
+    session->render(depsgraph, render_delegate);
   }
   else {
     session->render(depsgraph, render_delegate);
@@ -604,10 +635,10 @@ static PyObject *render_frame_finish_func(PyObject * /*self*/, PyObject *args)
 static PyObject *view_update_func(PyObject * /*self*/, PyObject *args)
 {
   LOG(INFO) << "view_update_func";
-  PyObject *pysession, *pydepsgraph, *pycontext, *pyspaceData, *pyregionData;
+  PyObject *pysession, *pydepsgraph, *pycontext, *pyspaceData, *pyregionData, *delegate_settings;
   const char *render_delegate;
 
-  if (!PyArg_ParseTuple(args, "OOOOOs", &pysession, &pydepsgraph, &pycontext, &pyspaceData, &pyregionData, &render_delegate)) {
+  if (!PyArg_ParseTuple(args, "OOOOOsO", &pysession, &pydepsgraph, &pycontext, &pyspaceData, &pyregionData, &render_delegate, &delegate_settings)) {
     Py_RETURN_NONE;
   }
 

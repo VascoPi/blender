@@ -7,7 +7,7 @@ import bpy
 
 
 class USDHydra_Operator(bpy.types.Operator):
-    COMPAT_ENGINES = {'USDHydra'}
+    COMPAT_ENGINES = {'USDHydraHdStormRendererPlugin'}
 
     @classmethod
     def poll(cls, context):
@@ -18,7 +18,7 @@ class USDHydra_Panel(bpy.types.Panel):
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = 'render'
-    COMPAT_ENGINES = {'USDHydra'}
+    COMPAT_ENGINES = {'USDHydraHdStormRendererPlugin'}
 
     @classmethod
     def poll(cls, context):
@@ -34,7 +34,6 @@ class USDHydra_ChildPanel(bpy.types.Panel):
 from . import (
     panels,
     render,
-    hdrpr_render,
     light,
     material,
     world,
@@ -53,16 +52,6 @@ register_classes, unregister_classes = bpy.utils.register_classes_factory([
     render.USDHYDRA_MT_data_source_viewport,
     render.USDHYDRA_RENDER_PT_render_settings_final,
     render.USDHYDRA_RENDER_PT_render_settings_viewport,
-
-    # hdrpr_render.USDHYDRA_RENDER_PT_hdrpr_settings_final,
-    # hdrpr_render.USDHYDRA_RENDER_PT_hdrpr_settings_samples_final,
-    # hdrpr_render.USDHYDRA_RENDER_PT_hdrpr_settings_quality_final,
-    # hdrpr_render.USDHYDRA_RENDER_PT_hdrpr_settings_denoise_final,
-    # hdrpr_render.USDHYDRA_RENDER_PT_hdrpr_settings_film_final,
-    # hdrpr_render.USDHYDRA_RENDER_PT_hdrpr_settings_viewport,
-    # hdrpr_render.USDHYDRA_RENDER_PT_hdrpr_settings_samples_viewport,
-    # hdrpr_render.USDHYDRA_RENDER_PT_hdrpr_settings_quality_viewport,
-    # hdrpr_render.USDHYDRA_RENDER_PT_hdrpr_settings_denoise_viewport,
 
     light.USDHYDRA_LIGHT_PT_light,
 

@@ -9,28 +9,11 @@ import _usdhydra
 from ..viewport import usd_collection
 #from ..export.camera import CameraData
 #from ..viewport.usd_collection import USD_CAMERA
-from . import USDHydraProperties, hdrpr_render
-from ..engine import session_get_render_plugins
+from . import USDHydraProperties
+
 
 
 class RenderSettings(bpy.types.PropertyGroup):
-    def delegate_items(self, context):
-        delegates = _usdhydra.session.get_render_plugins()
-        ret = [(d['id'], d['name'], f"Hydra render delegate: {d['name']}") for d in delegates]
-
-        # move Rpr to the beginning of the list to make it default delegate
-        index = next((index for index, (name, *_) in enumerate(ret) if name == 'HdRprPlugin'), 0)
-        if index != 0:
-            ret.insert(0, ret.pop(index))
-
-        return ret
-
-    @property
-    def is_gl_delegate(self):
-        return self.delegate == 'HdStormRendererPlugin'
-
-    hdrpr: bpy.props.PointerProperty(type=hdrpr_render.RenderSettings)
-
     def nodetree_update(self, context):
         if not self.data_source:
             self.nodetree_camera = ""
@@ -59,11 +42,6 @@ class RenderSettings(bpy.types.PropertyGroup):
 
 
 class FinalRenderSettings(RenderSettings):
-    delegate: bpy.props.EnumProperty(
-        name="Renderer",
-        items=RenderSettings.delegate_items,
-        description="Render delegate for final render",
-    )
     data_source: bpy.props.StringProperty(
         name="Data Source",
         description="Data source for final render",
@@ -77,12 +55,6 @@ class FinalRenderSettings(RenderSettings):
 
 
 class ViewportRenderSettings(RenderSettings):
-    delegate: bpy.props.EnumProperty(
-        name="Renderer",
-        items=RenderSettings.delegate_items,
-        description="Render delegate for viewport render",
-    )
-
     def data_source_update(self, context):
         usd_collection.update(context)
     #

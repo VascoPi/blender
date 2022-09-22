@@ -23,7 +23,7 @@ class USDTree(bpy.types.ShaderNodeTree):
     bl_label = "USD"
     bl_icon = 'NODETREE'
     bl_idname = 'usdhydra.USDTree'
-    COMPAT_ENGINES = {'USDHydra'}
+    COMPAT_ENGINES = {'USDHydraHdStormRendererPlugin'}
 
     _is_resetting = False
     _do_update = True
