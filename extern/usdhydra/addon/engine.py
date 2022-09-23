@@ -10,9 +10,10 @@ from pathlib import Path
 import bpy
 import _usdhydra
 import MaterialX as mx
+from pxr import Vt
 
 from .usd_nodes import node_tree
-from .utils import stages, logging
+from .utils import stages, logging, get_VtValue
 log = logging.Log('engine')
 
 # def init():
@@ -121,8 +122,13 @@ class USDHydraEngine(bpy.types.RenderEngine):
             self.session = session_create(self)
 
         delegate_settings = self.sync_viewport_delegate_settings()
-        log.warn(delegate_settings)
+        log.warn("\n".join([str(d) for d in delegate_settings]))
         materialx_data = self.get_materialx_data(context, depsgraph)
+
+        # delegate_settings = (
+        #     ('rpr:maxSamples', 200),
+        #     ('rpr:core:renderQuality', 'HybridPro')
+        # )
 
         session_reset(self.session, data, context, depsgraph, materialx_data, is_blender_scene,
                       stage, self.delegate_name, self.is_preview)
@@ -135,10 +141,12 @@ class USDHydraEngine(bpy.types.RenderEngine):
         session_view_draw(self.session, depsgraph, context, context.space_data, context.region_data)
 
     def sync_final_delegate_settings(self):
-        return dict()
+        return tuple()
+        # return dict()
 
     def sync_viewport_delegate_settings(self):
-        return dict()
+        return tuple()
+        # return dict()
 
     def get_materialx_data(self, context, depsgraph):
         data = []

@@ -62,9 +62,13 @@ def register():
     handlers.register()
 
     register_class(engine.USDHydraHdStormEngine)
+    from .utils import enable_delegates
+    enable_delegates()
 
 
 def unregister():
+    from .utils import disable_delegates
+    disable_delegates()
     ui.unregister()
     mx_nodes.unregister()
     properties.unregister()
