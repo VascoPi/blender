@@ -43,20 +43,6 @@ def update_ui(area_type='PROPERTIES', region_type='WINDOW'):
                         region.tag_redraw()
 
 
-def get_VtValue(val):
-    if isinstance(val, str):
-        return Vt.Token(val)
-
-    if isinstance(val, bool):
-        return Vt.Bool(val)
-
-    if isinstance(val, float):
-        return Vt.Float(val)
-
-    if isinstance(val, int):
-        return Vt.Int(val)
-
-    return Vt.Bool(val)
 
 
 def register_delegate(delegate_dir, engine_bl_idname):
@@ -95,7 +81,6 @@ def disable_delegates():
     import bpy
     for delegate in RENDER_DELEGATE_ADDONS:
         enabled, loaded = addon_utils.check(delegate)
-        log.warn("Delegate state", delegate, loaded, enabled)
         if enabled:
             log.warn("Disable Delegate ", delegate)
             addon_utils.disable(delegate)
@@ -105,7 +90,7 @@ def disable_delegates():
 def enable_delegates():
     import addon_utils, sys, importlib
     for delegate in RENDER_DELEGATE_ADDONS:
-        enabled, loaded  = addon_utils.check(delegate)
+        enabled, loaded = addon_utils.check(delegate)
         if not loaded or not loaded:
             mod = sys.modules.get(delegate)
             importlib.reload(mod)

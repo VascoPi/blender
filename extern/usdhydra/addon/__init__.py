@@ -62,6 +62,7 @@ def register():
     handlers.register()
 
     register_class(engine.USDHydraHdStormEngine)
+
     from .utils import enable_delegates
     enable_delegates()
 

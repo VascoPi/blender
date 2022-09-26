@@ -13,7 +13,7 @@ import MaterialX as mx
 from pxr import Vt
 
 from .usd_nodes import node_tree
-from .utils import stages, logging, get_VtValue
+from .utils import stages, logging
 log = logging.Log('engine')
 
 # def init():
