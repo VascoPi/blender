@@ -105,8 +105,10 @@ void BlenderSession::render_gl(BL::Depsgraph &b_depsgraph, const char *render_de
     return;
   }
 
-  for (auto const& pair : delegate_settings) {
-    imagingGLEngine->SetRendererSetting(pair.first, pair.second);
+  if (!delegate_settings.empty()){
+    for (auto const& pair : delegate_settings) {
+      imagingGLEngine->SetRendererSetting(pair.first, pair.second);
+    }
   }
 
   BL::Scene b_scene = b_depsgraph.scene_eval();
@@ -175,8 +177,10 @@ void BlenderSession::render(BL::Depsgraph& b_depsgraph, const char* render_deleg
     return;
   }
 
-  for (auto const& pair : delegate_settings) {
-    imagingGLEngine->SetRendererSetting(pair.first, pair.second);
+  if (!delegate_settings.empty()){
+    for (auto const& pair : delegate_settings) {
+      imagingLiteEngine->SetRendererSetting(pair.first, pair.second);
+    }
   }
 
   BL::Scene b_scene = b_depsgraph.scene_eval();
@@ -293,8 +297,11 @@ void BlenderSession::view_update(BL::Depsgraph &b_depsgraph, BL::Context &b_cont
   }
   
   imagingGLEngine->SetRendererPlugin(TfToken(render_delegate));
-  for (auto const& pair : delegate_settings) {
-    imagingGLEngine->SetRendererSetting(pair.first, pair.second);
+
+  if (!delegate_settings.empty()){
+    for (auto const& pair : delegate_settings) {
+      imagingGLEngine->SetRendererSetting(pair.first, pair.second);
+    }
   }
 
   if (imagingGLEngine->IsPauseRendererSupported()) {
@@ -611,7 +618,6 @@ static PyObject *render_func(PyObject * /*self*/, PyObject *args)
       char *value_dirty_s = nullptr;
       float value_dirty_f = 0.0f;
       int value_dirty_i = 0;
-      bool value_dirty_b = false;
 
       VtValue value;
       TfToken key;
@@ -619,41 +625,29 @@ static PyObject *render_func(PyObject * /*self*/, PyObject *args)
       if (!next) {
         break;
       }
-
+      PyErr_Clear();
       if (PyArg_ParseTuple(next, "si", &key_dirty, &value_dirty_i)) {
         TfToken key(key_dirty);
         VtValue value(value_dirty_i);
-        printf("%s\n", key_dirty);
         settings.insert(pair (key, value));
         continue;
       }
       else if (PyArg_ParseTuple(next, "ss", &key_dirty, &value_dirty_s)) {
         TfToken key(key_dirty);
         VtValue value(value_dirty_s);
-        printf("%s\n", key_dirty);
         settings.insert(pair (key, value));
         continue;
       }
       else if (PyArg_ParseTuple(next, "sf", &key_dirty, &value_dirty_f)) {
         TfToken key(key_dirty);
         VtValue value(value_dirty_f);
-        printf("%s\n", key_dirty);
         settings.insert(pair (key, value));
         continue;
       }
-      else if (PyArg_ParseTuple(next, "sp", &key_dirty, &value_dirty_b)) {
-        TfToken key(key_dirty);
-        VtValue value(value_dirty_b);
-        printf("%s\n", key_dirty);
-        settings.insert(pair (key, value));
-        continue;
       }
-      continue;
-      }
+    PyErr_Clear();
     }
   }
-    
-     
 
   if (strcmp(render_delegate, "HdRprPlugin") == 0) {
     session->render(depsgraph, render_delegate, settings);
@@ -703,7 +697,6 @@ static PyObject *view_update_func(PyObject * /*self*/, PyObject *args)
       char *value_dirty_s = nullptr;
       float value_dirty_f = 0.0f;
       int value_dirty_i = 0;
-      bool value_dirty_b = false;
 
       VtValue value;
       TfToken key;
@@ -711,40 +704,28 @@ static PyObject *view_update_func(PyObject * /*self*/, PyObject *args)
       if (!next) {
         break;
       }
-
       if (PyArg_ParseTuple(next, "si", &key_dirty, &value_dirty_i)) {
         TfToken key(key_dirty);
         VtValue value(value_dirty_i);
-        printf("%s\n", key_dirty);
         settings.insert(pair (key, value));
         continue;
       }
       else if (PyArg_ParseTuple(next, "ss", &key_dirty, &value_dirty_s)) {
         TfToken key(key_dirty);
         VtValue value(value_dirty_s);
-        printf("%s\n", key_dirty);
         settings.insert(pair (key, value));
         continue;
       }
       else if (PyArg_ParseTuple(next, "sf", &key_dirty, &value_dirty_f)) {
         TfToken key(key_dirty);
         VtValue value(value_dirty_f);
-        printf("%s\n", key_dirty);
         settings.insert(pair (key, value));
         continue;
       }
-      else if (PyArg_ParseTuple(next, "sp", &key_dirty, &value_dirty_b)) {
-        TfToken key(key_dirty);
-        VtValue value(value_dirty_b);
-        printf("%s\n", key_dirty);
-        settings.insert(pair (key, value));
-        continue;
       }
-      continue;
-      }
+    PyErr_Clear();
     }
   }
-
 
   session->view_update(b_depsgraph, b_context, render_delegate, settings);
 

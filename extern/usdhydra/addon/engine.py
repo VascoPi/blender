@@ -92,7 +92,6 @@ class USDHydraEngine(bpy.types.RenderEngine):
             return
 
         delegate_settings = self.sync_final_delegate_settings()
-        log.warn(delegate_settings)
 
         session_render(self.session, depsgraph, self.delegate_name, delegate_settings)
 
@@ -122,13 +121,7 @@ class USDHydraEngine(bpy.types.RenderEngine):
             self.session = session_create(self)
 
         delegate_settings = self.sync_viewport_delegate_settings()
-        log.warn("\n".join([str(d) for d in delegate_settings]))
         materialx_data = self.get_materialx_data(context, depsgraph)
-
-        # delegate_settings = (
-        #     ('rpr:maxSamples', 200),
-        #     ('rpr:core:renderQuality', 'HybridPro')
-        # )
 
         session_reset(self.session, data, context, depsgraph, materialx_data, is_blender_scene,
                       stage, self.delegate_name, self.is_preview)
@@ -142,11 +135,9 @@ class USDHydraEngine(bpy.types.RenderEngine):
 
     def sync_final_delegate_settings(self):
         return tuple()
-        # return dict()
 
     def sync_viewport_delegate_settings(self):
         return tuple()
-        # return dict()
 
     def get_materialx_data(self, context, depsgraph):
         data = []
