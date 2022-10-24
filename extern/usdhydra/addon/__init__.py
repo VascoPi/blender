@@ -29,7 +29,6 @@ if "bpy" in locals():
 
 else:
     from . import (
-        mx_nodes,
         properties,
         engine,
         usd_nodes,
@@ -54,7 +53,6 @@ def register():
     atexit.unregister(exit)
     atexit.register(exit)
 
-    mx_nodes.register()
     properties.register()
 
     ui.register()
@@ -71,7 +69,6 @@ def unregister():
     from .utils import disable_delegates
     disable_delegates()
     ui.unregister()
-    mx_nodes.unregister()
     properties.unregister()
     usd_nodes.unregister()
     handlers.unregister()

@@ -5,7 +5,6 @@
 
 import bpy
 import _usdhydra
-import MaterialX as mx
 
 from .usd_nodes import node_tree
 from .utils import stages, logging
@@ -131,16 +130,15 @@ class USDHydraEngine(bpy.types.RenderEngine):
 
                 mat = mat_slot.material
 
-                mx_file = _usdhydra.utils.get_temp_file(".mtlx",
-                                                        f'{mat.name}{mat.usdhydra.mx_node_tree.name if mat.usdhydra.mx_node_tree else ""}',
-                                                        True)
-
-                doc = mat.usdhydra.export(obj)
-                if not doc:
-                    # log.warn("MX export failed", mat)
+                if not hasattr(mat, 'materialx'):
                     return None
 
-                mx.writeToXmlFile(doc, str(mx_file))
+                mx_file, doc = mat.materialx.get_materialx_data(obj)
+
+                if not mx_file:
+                    log.warn("MX export failed", mat)
+                    continue
+
                 surfacematerial = next((node for node in doc.getNodes() if node.getCategory() == 'surfacematerial'))
 
                 data.append((mat.name, str(mx_file), surfacematerial.getName()))

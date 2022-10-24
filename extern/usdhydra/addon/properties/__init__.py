@@ -27,7 +27,6 @@ from . import (
     scene,
     object,
     usd_stage,
-    material,
     window_manager,
 )
 register_classes, unregister_classes = bpy.utils.register_classes_factory((
@@ -38,8 +37,6 @@ register_classes, unregister_classes = bpy.utils.register_classes_factory((
     scene.SceneProperties,
 
     object.ObjectProperties,
-
-    material.MaterialProperties,
 
     usd_stage.UsdStagePrim,
     usd_stage.UsdStage,

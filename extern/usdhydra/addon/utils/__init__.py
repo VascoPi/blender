@@ -46,29 +46,36 @@ def update_ui(area_type='PROPERTIES', region_type='WINDOW'):
 def register_delegate(delegate_dir, engine_bl_idname):
     import _usdhydra
     from ..ui import USDHydra_Panel, USDHydra_Operator
-    from ..mx_nodes.node_tree import MxNodeTree
+    from ..ui.panels import get_panels
     from ..usd_nodes.node_tree import USDTree
 
     global RENDER_DELEGATE_ADDONS
 
     _usdhydra.init_delegate(str(delegate_dir))
+
+    for panel in get_panels():
+        panel.COMPAT_ENGINES.add(engine_bl_idname)
+
     USDHydra_Panel.COMPAT_ENGINES.add(engine_bl_idname)
     USDHydra_Operator.COMPAT_ENGINES.add(engine_bl_idname)
     USDTree.COMPAT_ENGINES.add(engine_bl_idname)
-    MxNodeTree.COMPAT_ENGINES.add(engine_bl_idname)
     RENDER_DELEGATE_ADDONS.add(engine_bl_idname)
 
 
 def unregister_delegate(engine_bl_idname):
     from ..ui import USDHydra_Panel, USDHydra_Operator
-    from ..mx_nodes.node_tree import MxNodeTree
+    from ..ui.panels import get_panels
     from ..usd_nodes.node_tree import USDTree
 
     try:
         USDHydra_Panel.COMPAT_ENGINES.remove(engine_bl_idname)
         USDHydra_Operator.COMPAT_ENGINES.remove(engine_bl_idname)
+
+        for panel in get_panels():
+            if 'USDHydraHdStormRendererPlugin' in panel.COMPAT_ENGINES:
+                panel.COMPAT_ENGINES.remove(engine_bl_idname)
+
         USDTree.COMPAT_ENGINES.remove(engine_bl_idname)
-        MxNodeTree.COMPAT_ENGINES.remove(engine_bl_idname)
 
     except:
         pass

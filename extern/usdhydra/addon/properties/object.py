@@ -32,16 +32,16 @@ class ObjectProperties(USDHydraProperties):
     #
     #     usd_utils.bind_material(prim, usd_mat)
 
-    def poll_material(self, mat):
-        return mat.usdhydra.mx_node_tree or mat.node_tree
-
-    material: bpy.props.PointerProperty(
-        name="Material",
-        description="Select material for USD mesh",
-        type=bpy.types.Material,
-        #update=update_material,
-        poll=poll_material
-    )
+    # def poll_material(self, mat):
+    #     return mat.node_tree
+    #
+    # material: bpy.props.PointerProperty(
+    #     name="Material",
+    #     description="Select material for USD mesh",
+    #     type=bpy.types.Material,
+    #     #update=update_material,
+    #     poll=poll_material
+    # )
 
     @property
     def is_usd(self):

@@ -78,22 +78,6 @@ set(ADDON_FILES
   addon/handlers.py
 )
 
-set(ADDON_MX_NODES_FILES
-  addon/mx_nodes/__init__.py
-  addon/mx_nodes/node_tree.py
-)
-
-set(ADDON_MX_NODES_NODES_FILES
-  addon/mx_nodes/nodes/__init__.py
-  addon/mx_nodes/nodes/base_node.py
-  addon/mx_nodes/nodes/categories.py
-  addon/mx_nodes/nodes/gen_alglib_defs.py
-  addon/mx_nodes/nodes/gen_pbrlib_defs.py
-  addon/mx_nodes/nodes/gen_standard_surface.py
-  addon/mx_nodes/nodes/gen_stdlib_defs.py
-  addon/mx_nodes/nodes/gen_usd_preview_surface.py
-)
-
 set(ADDON_USD_NODES_FILES
   addon/usd_nodes/__init__.py
   addon/usd_nodes/node_tree.py
@@ -111,7 +95,6 @@ set(ADDON_USD_NODES_NODES_FILES
 set(ADDON_PROPERTIES_FILES
   addon/properties/__init__.py
   addon/properties/scene.py
-  addon/properties/material.py
   addon/properties/object.py
   addon/properties/usd_stage.py
   addon/properties/preferences.py
@@ -123,7 +106,6 @@ set(ADDON_UI_FILES
   addon/ui/render.py
   addon/ui/object.py
   addon/ui/world.py
-  addon/ui/material.py
   addon/ui/light.py
   addon/ui/panels.py
   addon/ui/usd_nodes.py
@@ -133,7 +115,6 @@ set(ADDON_UI_FILES
 set(ADDON_UTILS_FILES
   addon/utils/__init__.py
   addon/utils/image.py
-  addon/utils/mx.py
   addon/utils/stages.py
   addon/utils/logging.py
 )
@@ -158,8 +139,6 @@ add_dependencies(extern_usdhydra bf_rna)
 delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_FILES}" ${USDHYDRA_INSTALL_PATH})
 delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_UTILS_FILES}" ${USDHYDRA_INSTALL_PATH}/utils)
 delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_VIEWPORT_FILES}" ${USDHYDRA_INSTALL_PATH}/viewport)
-delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_MX_NODES_FILES}" ${USDHYDRA_INSTALL_PATH}/mx_nodes)
-delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_MX_NODES_NODES_FILES}" ${USDHYDRA_INSTALL_PATH}/mx_nodes/nodes)
 delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_PROPERTIES_FILES}" ${USDHYDRA_INSTALL_PATH}/properties)
 delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_USD_NODES_FILES}" ${USDHYDRA_INSTALL_PATH}/usd_nodes)
 delayed_install(${CMAKE_CURRENT_SOURCE_DIR} "${ADDON_USD_NODES_NODES_FILES}" ${USDHYDRA_INSTALL_PATH}/usd_nodes/nodes)

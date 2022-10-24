@@ -4,7 +4,6 @@
 # <pep8 compliant>
 
 import bpy
-#from ..utils import mx as mx_utils
 #from .material import update_material_ui
 
 
@@ -20,26 +19,6 @@ def get_panels():
         'DATA_PT_shadow',
         'DATA_PT_spot',
         'DATA_PT_sunsky',
-        'MATERIAL_PT_context_material',
-        'MATERIAL_PT_diffuse',
-        'MATERIAL_PT_flare',
-        'MATERIAL_PT_halo',
-        'MATERIAL_PT_mirror',
-        'MATERIAL_PT_options',
-        'MATERIAL_PT_pipeline',
-        'MATERIAL_PT_preview',
-        'MATERIAL_PT_shading',
-        'MATERIAL_PT_shadow',
-        'MATERIAL_PT_specular',
-        'MATERIAL_PT_sss',
-        'MATERIAL_PT_strand',
-        'MATERIAL_PT_transp',
-        'MATERIAL_PT_volume_density',
-        'MATERIAL_PT_volume_integration',
-        'MATERIAL_PT_volume_lighting',
-        'MATERIAL_PT_volume_options',
-        'MATERIAL_PT_volume_shading',
-        'MATERIAL_PT_volume_transp',
         'RENDERLAYER_PT_layer_options',
         'RENDERLAYER_PT_layer_passes',
         'RENDERLAYER_PT_views',
@@ -64,7 +43,7 @@ def get_panels():
     }
 
     for panel in bpy.types.Panel.__subclasses__():
-        if hasattr(panel, 'COMPAT_ENGINES') and 'BLENDER_RENDER' in panel.COMPAT_ENGINES:
+        if hasattr(panel, 'COMPAT_ENGINES') and 'CYCLES' in panel.COMPAT_ENGINES:
             if panel.__name__ not in exclude_panels:
                 yield panel
 
@@ -81,7 +60,7 @@ def register():
 def unregister():
     # remove USDHydra panels filter
     for panel in get_panels():
-        if 'USDHydra' in panel.COMPAT_ENGINES:
+        if 'USDHydraHdStormRendererPlugin' in panel.COMPAT_ENGINES:
             panel.COMPAT_ENGINES.remove('USDHydraHdStormRendererPlugin')
 
     # remove update for material ui according to MaterialX nodetree header changes
